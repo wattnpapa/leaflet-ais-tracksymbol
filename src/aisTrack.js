@@ -96,7 +96,7 @@ L.AISTrack = L.TrackSymbol.extend({
     },
 
     _getPopupContent: function() {
-        var headerText = this.getName().length != 0  ? this.getName() : "MSSI: " + this.getMmsi();
+        var headerText = this.getName().length !== 0  ? this.getName() : "MSSI: " + this.getMmsi();
 
 
         var content = "<div class='ais-popup-header'>"+headerText+"</div>" +
@@ -283,7 +283,7 @@ L.AISTrack = L.TrackSymbol.extend({
     },
 
     setDestination: function(destination){
-        if(destination.length == 0)
+        if(destination.length === 0)
             destination = false;
         this._destination = destination;
     },
