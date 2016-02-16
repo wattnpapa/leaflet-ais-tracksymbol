@@ -1,0 +1,16 @@
+languages:
+  JavaScript: true
+engines:
+  csslint:
+    enabled: true
+  eslint:
+      enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - JavaScript
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
