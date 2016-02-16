@@ -17,5 +17,8 @@
     "components/",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "leaflet-tracksymbol": "^1.0.1"
+  }
 }
