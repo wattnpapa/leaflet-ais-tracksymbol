@@ -57,6 +57,7 @@ L.AISTrack = L.TrackSymbol.extend({
 
     },
     addData: function(aisData){
+        this.setMmsi(aisData.mmsi);
         if(aisData.navigationStatus) this.setNavigationStatus(aisData.navigationStatus);
         if(aisData.rot) this.setRot(aisData.rot);
         if(aisData.sog) this.setSog(aisData.sog);
@@ -83,7 +84,6 @@ L.AISTrack = L.TrackSymbol.extend({
         if(aisData.destination) this.setDestination(aisData.destination);
         if(aisData.dte) this.setDte(aisData.dte);
 
-        this.setMmsi(aisData.mmsi);
         this.getLatitude() && this.getLongitude() ?  this.setLatLng(L.latLng(this.getLatitude(), this.getLongitude())) : false;
         if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
         this.setLastUpdate();
