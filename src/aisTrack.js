@@ -84,6 +84,7 @@ L.AISTrack = L.TrackSymbol.extend({
 
         this.setMmsi(aisData.mmsi);
         this.getLatitude() && this.getLongitude() ?  this.setLatLng(L.latLng(this.getLatitude(), this.getLongitude())) : false;
+        if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
         this.setLastUpdate();
     },
 
@@ -436,6 +437,10 @@ L.AISTrack = L.TrackSymbol.extend({
 
     setCommunicationState: function(communicationState){
         this._communicationState = communicationState;
+    },
+
+    getReferencePositions: function(){
+        return (this.getReferencePositionA() && this.getReferencePositionB() && this.getReferencePositionC() && this.getReferencePositionD()) ? [this.getReferencePositionA(),this.getReferencePositionB() ,this.getReferencePositionC() , this.getReferencePositionD()] : false;
     },
 
     getReferencePositionA: function(){
