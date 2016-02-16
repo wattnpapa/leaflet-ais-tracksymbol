@@ -1,0 +1,36 @@
+.ais-track-popup > .leaflet-popup-content-wrapper {
+    border-radius: 6px;
+    background: #1f68A7 none repeat scroll 0 0;
+}
+
+.ais-track-popup > .leaflet-popup-content-wrapper > .leaflet-popup-content{
+    margin: 0;
+}
+
+.ais-track-popup > a.leaflet-popup-close-button{
+    padding: 10px 25px 0 0
+}
+
+.ais-track-popup-header {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0;
+    padding: 10px;
+    font-weight: bold;
+    color: white;
+}
+
+.ais-track-popup-content {
+    margin: 0;
+    padding: 10px;
+    color: white;
+}
+
+.ais-track-popup-footer {
+    border-top: 1px solid #e5e5e5;
+    padding: 10px;
+    color: white;
+}
+
+.ais-track-popup a {
+    color: white;
+}
