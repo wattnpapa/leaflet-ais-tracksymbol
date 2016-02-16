@@ -64,6 +64,8 @@ L.AISTrack = L.TrackSymbol.extend({
         if(aisData.positionAccuracy) this.setPositionAccuracy(aisData.positionAccuracy);
         if(aisData.latitude) this.setLatitude(aisData.latitude);
         if(aisData.longitude) this.setLongitude(aisData.longitude);
+        if(this.getLatitude() && this.getLongitude()) this.setLatLng(L.latLng(this.getLatitude(), this.getLongitude()));
+
         if(aisData.trueHeading) this.setTrueHeading(aisData.trueHeading);
         if(aisData.timeStamp) this.setTimeStamp(aisData.timeStamp);
         if(aisData.specialManoeuvreIndicator) this.setSpecialManoeuvreIndicator(aisData.specialManoeuvreIndicator);
@@ -84,7 +86,6 @@ L.AISTrack = L.TrackSymbol.extend({
         if(aisData.destination) this.setDestination(aisData.destination);
         if(aisData.dte) this.setDte(aisData.dte);
 
-        this.getLatitude() && this.getLongitude() ?  this.setLatLng(L.latLng(this.getLatitude(), this.getLongitude())) : false;
         if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
         this.setLastUpdate();
         this._labelAndPopupUpdate();
