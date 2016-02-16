@@ -304,44 +304,32 @@ L.AISTrack = L.TrackSymbol.extend({
         switch (this.getNavigationStatus()){
             case 0:
                 return "under way using engine";
-                break;
             case 1:
                 return "at anchor";
-                break;
             case 2:
                 return "not under command";
-                break;
             case 3:
                 return "restricted manoeuvrability";
-                break;
             case 4:
                 return "constrained by her draught";
-                break;
             case 5:
                 return "moored";
-                break;
             case 6:
                 return "aground";
-                break;
             case 7:
                 return "engaged in fishing";
-                break;
             case 8:
                 return "under way sailing";
-                break;
             case 9:
             case 10:
             case 11:
             case 12:
             case 13:
                 return "-";
-                break;
             case 14:
                 return "AIS-SART (active)";
-                break;
             case 15:
                 return "AIS-SART (test)";
-                break;
         }
     },
 
