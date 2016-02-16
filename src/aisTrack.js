@@ -87,6 +87,7 @@ L.AISTrack = L.TrackSymbol.extend({
         this.getLatitude() && this.getLongitude() ?  this.setLatLng(L.latLng(this.getLatitude(), this.getLongitude())) : false;
         if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
         this.setLastUpdate();
+        this._labelAndPopupUpdate();
     },
 
     _labelAndPopupUpdate: function (){
@@ -220,7 +221,6 @@ L.AISTrack = L.TrackSymbol.extend({
     setMmsi: function(mmsi){
         this._mmsi = mmsi;
         this._leaflet_id = mmsi;
-        this._labelAndPopupUpdate();
     },
 
     getAisVersionIndicator: function(){
