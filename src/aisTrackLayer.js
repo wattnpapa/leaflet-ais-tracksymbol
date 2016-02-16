@@ -7,6 +7,7 @@ L.AISTrackLayer = L.FeatureGroup.extend({
     initialize: function(layers){
         L.LayerGroup.prototype.initialize.call(this, layers);
         this._intervalDeadObjs = setInterval(this._checkDeadObjects,1000,this);
+        this.setRemoveTime(6);
     },
 
     addAisData: function(mmsi,data){
