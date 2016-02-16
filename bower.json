@@ -1,0 +1,21 @@
+{
+  "name": "leaflet-ais-tracksymbol",
+  "homepage": "https://github.com/PowerPan/leaflet-ais-tracksymbol",
+  "authors": [
+    "Johannes Rudolph <johannes.rudolph@gmx.com>"
+  ],
+  "description": "AIS Extension for leaflet-tracksymbol",
+  "keywords": [
+    "AIS",
+    "leaflet"
+  ],
+  "license": "GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components/",
+    "test",
+    "tests"
+  ]
+}
