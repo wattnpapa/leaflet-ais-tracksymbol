@@ -57,30 +57,30 @@ L.AISTrack = L.TrackSymbol.extend({
 
     },
     addData: function(aisData){
-        aisData.navigationStatus ? this.setNavigationStatus(aisData.navigationStatus) : false;
-        aisData.rot ? this.setRot(aisData.rot) : false;
-        aisData.positionAccuracy ? this.setPositionAccuracy(aisData.positionAccuracy) : false;
-        aisData.latitude ? this.setLatitude(aisData.latitude) : false;
-        aisData.longitude ? this.setLongitude(aisData.longitude) : false;
-        aisData.trueHeading ? this.setTrueHeading(aisData.trueHeading) : false;
-        aisData.timeStamp ? this.setTimeStamp(aisData.timeStamp) : false;
-        aisData.specialManoeuvreIndicator ? this.setSpecialManoeuvreIndicator(aisData.specialManoeuvreIndicator) : false;
-        aisData.raimFlag ? this.setRaimFlag(aisData.raimFlag) : false;
-        aisData.communicationState ? this.setCommunicationState(aisData.communicationState) : false;
-        aisData.aisVersionIndicator ? this.setAisVersionIndicator(aisData.aisVersionIndicator) : false;
-        aisData.imoNumber ? this.setImoNumber(aisData.imoNumber) : false;
-        aisData.callSign ? this.setCallSign(aisData.callSign) : false;
-        aisData.name ? this.setName(aisData.name) : false;
-        aisData.typeOfShipAndCargo ? this.setTypeOfShipAndCargo(aisData.typeOfShipAndCargo) : false;
-        aisData.referencePositionA ? this.setReferencePositionA(aisData.referencePositionA) : false;
-        aisData.referencePositionB ? this.setReferencePositionB(aisData.referencePositionB) : false;
-        aisData.referencePositionC ? this.setReferencePositionC(aisData.referencePositionC) : false;
-        aisData.referencePositionC ? this.setReferencePositionD(aisData.referencePositionD) : false;
-        aisData.typeOfDevice ? this.setTypeOfDevice(aisData.typeOfDevice) : false;
-        aisData.eta ? this.setEta(aisData.eta) : false;
-        aisData.maxPresentStaticDraught ? this.setMaxPresentStaticDraught(aisData.maxPresentStaticDraught) : false;
-        aisData.destination ? this.setDestination(aisData.destination) : false;
-        aisData.dte ? this.setDte(aisData.dte) : false;
+        if(aisData.navigationStatus) this.setNavigationStatus(aisData.navigationStatus);
+        if(aisData.rot) this.setRot(aisData.rot);
+        if(aisData.positionAccuracy) this.setPositionAccuracy(aisData.positionAccuracy);
+        if(aisData.latitude) this.setLatitude(aisData.latitude);
+        if(aisData.longitude) this.setLongitude(aisData.longitude);
+        if(aisData.trueHeading) this.setTrueHeading(aisData.trueHeading);
+        if(aisData.timeStamp) this.setTimeStamp(aisData.timeStamp);
+        if(aisData.specialManoeuvreIndicator) this.setSpecialManoeuvreIndicator(aisData.specialManoeuvreIndicator);
+        if(aisData.raimFlag) this.setRaimFlag(aisData.raimFlag);
+        if(aisData.communicationState) this.setCommunicationState(aisData.communicationState);
+        if(aisData.aisVersionIndicator) this.setAisVersionIndicator(aisData.aisVersionIndicator);
+        if(aisData.imoNumber) this.setImoNumber(aisData.imoNumber);
+        if(aisData.callSign) this.setCallSign(aisData.callSign);
+        if(aisData.name) this.setName(aisData.name);
+        if(aisData.typeOfShipAndCargo) this.setTypeOfShipAndCargo(aisData.typeOfShipAndCargo);
+        if(aisData.referencePositionA) this.setReferencePositionA(aisData.referencePositionA);
+        if(aisData.referencePositionB) this.setReferencePositionB(aisData.referencePositionB);
+        if(aisData.referencePositionC) this.setReferencePositionC(aisData.referencePositionC);
+        if(aisData.referencePositionC) this.setReferencePositionD(aisData.referencePositionD);
+        if(aisData.typeOfDevice) this.setTypeOfDevice(aisData.typeOfDevice);
+        if(aisData.eta) this.setEta(aisData.eta);
+        if(aisData.maxPresentStaticDraught) this.setMaxPresentStaticDraught(aisData.maxPresentStaticDraught);
+        if(aisData.destination) this.setDestination(aisData.destination);
+        if(aisData.dte) this.setDte(aisData.dte);
 
         this.setMmsi(aisData.mmsi);
         this.getLatitude() && this.getLongitude() ?  this.setLatLng(L.latLng(this.getLatitude(), this.getLongitude())) : false;
