@@ -59,6 +59,7 @@ L.AISTrack = L.TrackSymbol.extend({
     addData: function(aisData){
         if(aisData.navigationStatus) this.setNavigationStatus(aisData.navigationStatus);
         if(aisData.rot) this.setRot(aisData.rot);
+        if(aisData.sog) this.setSog(aisData.sog);
         if(aisData.positionAccuracy) this.setPositionAccuracy(aisData.positionAccuracy);
         if(aisData.latitude) this.setLatitude(aisData.latitude);
         if(aisData.longitude) this.setLongitude(aisData.longitude);
