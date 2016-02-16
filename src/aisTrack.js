@@ -490,6 +490,75 @@ L.AISTrack = L.TrackSymbol.extend({
 
     setLastUpdate: function(){
         this._lastUpdate = new Date();
+    },
+
+    /**
+     * Sets the line color of the symbol.
+     * @method setColor
+     * @param color {String} The color string.
+     */
+    setColor: function(color) {
+        this.setStyle({color: color})
+        return this.redraw();
+    },
+
+    /**
+     * Sets the fill Opacity of the symbol.
+     * @method setFillOpacity
+     * @param fillOpacity {Number} The fill opacity.
+     */
+    setFillOpacity: function(fillOpacity) {
+        this.setStyle({fillOpacity: fillOpacity})
+        return this.redraw();
+    },
+
+    /**
+     * Sets the Opacity of the symbol.
+     * @method setOpacity
+     * @param opacity {Number} The opacity.
+     */
+    setOpacity: function(opacity) {
+        this.setStyle({opacity: opacity})
+        return this.redraw();
+    },
+
+    /**
+     * Sets the Weight of the symbol.
+     * @method setWeight
+     * @param weight {Number} The weight .
+     */
+    setWeight: function(weight) {
+        this.setStyle({weight: weight})
+        return this.redraw();
+    },
+
+    /**
+     * Sets the fill of the symbol.
+     * @method setFill
+     * @param fill {Boolean} The fill.
+     */
+    setFill: function(fill) {
+        this.setStyle({fill: fill})
+        return this.redraw();
+    },
+
+    /**
+     * Sets the stroke of the symbol.
+     * @method setStroke
+     * @param stroke {Boolean} The stroke.
+     */
+    setStroke: function(stroke) {
+        this.setStyle({stroke: stroke})
+        return this.redraw();
+    },
+
+    /**
+     * Sets the fill color of the symbol.
+     * @method setFillColor
+     * @param color {String} The color string.
+     */
+    setFillColor: function(color) {
+        this.setStyle({fillColor: color})
     }
 
 });
