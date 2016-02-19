@@ -17,7 +17,15 @@ L.AISTrackLayer = L.FeatureGroup.extend({
             trackMarker.addData(data);
         }
         else{
-            trackMarker = L.aisTrack({});
+            trackMarker = L.aisTrack( {
+                contextmenu: true,
+                contextmenuItems: [{
+                    text: 'CPA Calculation',
+                    index: 0
+                }, {
+                    separator: true,
+                    index: 1
+                }]});
             trackMarker.addData(data);
             this.addLayer(trackMarker);
         }
