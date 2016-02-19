@@ -19,6 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "leaflet-tracksymbol": "^1.0.1"
+    "leaflet-tracksymbol": "^1.0.1",
+    "leaflet.contextmenu": "Leaflet.contextmenu#*"
   }
 }
