@@ -3,6 +3,10 @@
     background: #1f68A7 none repeat scroll 0 0;
 }
 
+.ais-track-popup > .leaflet-popup-tip-container > .leaflet-popup-tip {
+    background: #1f68A7 none repeat scroll 0 0;
+}
+
 .ais-track-popup > .leaflet-popup-content-wrapper > .leaflet-popup-content{
     margin: 0;
 }
@@ -34,3 +38,4 @@
 .ais-track-popup a {
     color: white;
 }
+
