@@ -493,7 +493,12 @@ L.AISTrack = L.TrackSymbol.extend({
     setRot: function(rot){
         this._rot = rot;
     },
-
+    
+    getSogKmH: function(){
+        var speedKmH = this._sog * 1.852;
+        return speedKmH.toFixed(1);
+    },
+    
     getSog: function(){
         return this._sog;
     },
