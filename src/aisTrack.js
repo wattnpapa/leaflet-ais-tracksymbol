@@ -886,6 +886,213 @@ L.AISTrack = L.TrackSymbol.extend({
         return this._referencePositionC + this._referencePositionD;
     },
 
+    getTypeOfShipText: function(){
+        switch (this.getTypeOfShipAndCargo()){
+            case 0:
+                return "NOT AVAILABLE OR NO SHIP";
+            case 1:
+                return "RESERVED";
+            case 2:
+                return "RESERVED";
+            case 3:
+                return "RESERVED";
+            case 4:
+                return "RESERVED";
+            case 5:
+                return "RESERVED";
+            case 6:
+                return "RESERVED";
+            case 7:
+                return "RESERVED";
+            case 8:
+                return "RESERVED";
+            case 9:
+                return "RESERVED";
+            case 10:
+                return "RESERVED";
+            case 11:
+                return "RESERVED";
+            case 12:
+                return "RESERVED";
+            case 13:
+                return "RESERVED";
+            case 14:
+                return "RESERVED";
+            case 15:
+                return "RESERVED";
+            case 16:
+                return "RESERVED";
+            case 17:
+                return "RESERVED";
+            case 18:
+                return "RESERVED";
+            case 19:
+                return "RESERVED";
+            case 20:
+                return "Wing In Grnd";
+            case 21:
+                return "Wing In Grnd";
+            case 22:
+                return "Wing In Grnd";
+            case 23:
+                return "Wing In Grnd";
+            case 24:
+                return "Wing In Grnd";
+            case 25:
+                return "Wing In Grnd";
+            case 26:
+                return "Wing In Grnd";
+            case 27:
+                return "Wing In Grnd";
+            case 28:
+                return "Wing In Grnd";
+            case 29:
+                return "Wing In Grnd";
+            case 30:
+                return "Fishing";
+            case 31:
+                return "Tug";
+            case 32:
+                return "Tug";
+            case 33:
+                return "Dredger";
+            case 34:
+                return "Dive Vessel";
+            case 35:
+                return "Military Ops";
+            case 36:
+                return "Sailing Vessel";
+            case 37:
+                return "Pleasure Craft";
+            case 38:
+                return "RESERVED";
+            case 39:
+                return "RESERVED";
+            case 40:
+                return "High-Speed Craft";
+            case 41:
+                return "High-Speed Craft";
+            case 42:
+                return "High-Speed Craft";
+            case 43:
+                return "High-Speed Craft";
+            case 44:
+                return "High-Speed Craft";
+            case 45:
+                return "High-Speed Craft";
+            case 46:
+                return "High-Speed Craft";
+            case 47:
+                return "High-Speed Craft";
+            case 48:
+                return "High-Speed Craft";
+            case 49:
+                return "High-Speed Craft";
+            case 50:
+                return "Pilot Vessel";
+            case 51:
+                return "SAR";
+            case 52:
+                return "Tug";
+            case 53:
+                return "Port Tender";
+            case 54:
+                return "Anti-Pollution";
+            case 55:
+                return "Law Enforce";
+            case 56:
+                return "Local Vessel";
+            case 57:
+                return "Local Vessel";
+            case 58:
+                return "Medical Trans";
+            case 59:
+                return "Special Craft";
+            case 60:
+                return "Passenger";
+            case 61:
+                return "Passenger";
+            case 62:
+                return "Passenger";
+            case 63:
+                return "Passenger";
+            case 64:
+                return "Passenger";
+            case 65:
+                return "Passenger";
+            case 66:
+                return "Passenger";
+            case 67:
+                return "Passenger";
+            case 68:
+                return "Passenger";
+            case 69:
+                return "Passenger";
+            case 70:
+                return "Cargo";
+            case 71:
+                return "Cargo - Hazard A";
+            case 72:
+                return "Cargo - Hazard B";
+            case 73:
+                return "Cargo - Hazard C";
+            case 74:
+                return "Cargo - Hazard D";
+            case 75:
+                return "Cargo";
+            case 76:
+                return "Cargo";
+            case 77:
+                return "Cargo";
+            case 78:
+                return "Cargo";
+            case 79:
+                return "Cargo";
+            case 80:
+                return "Tanker";
+            case 81:
+                return "Tanker - Hazard A";
+            case 82:
+                return "Tanker - Hazard B";
+            case 83:
+                return "Tanker - Hazard C";
+            case 84:
+                return "Tanker - Hazard D";
+            case 85:
+                return "Tanker";
+            case 86:
+                return "Tanker";
+            case 87:
+                return "Tanker";
+            case 88:
+                return "Tanker";
+            case 89:
+                return "Tanker";
+            case 90:
+                return "Other";
+            case 91:
+                return "Other";
+            case 92:
+                return "Other";
+            case 93:
+                return "Other";
+            case 94:
+                return "Other";
+            case 95:
+                return "Other";
+            case 96:
+                return "Other";
+            case 97:
+                return "Other";
+            case 98:
+                return "Other";
+            case 99:
+                return "Other";
+            default:
+                return "Other";
+        }
+    },   
+
     getLastUpdate: function(){
         return this._lastUpdate;
     },
