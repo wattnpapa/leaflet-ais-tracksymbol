@@ -453,6 +453,14 @@ L.AISTrack = L.TrackSymbol.extend({
         return this._virtualAtoNFlag;
     },
     
+    getVirtualAtoNFlagText: function(){        
+        switch (this.getVirtualAtoNFlag()){
+            case 0:
+                return "real AtoN at indicated position";
+            case 1:
+                return "virtual AtoN, does not physically exist";            
+        }
+    },
     
     setAssignedModeFlag: function(assignedModeFlag){
         this._assignedModeFlag = assignedModeFlag;        
