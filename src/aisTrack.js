@@ -469,6 +469,16 @@ L.AISTrack = L.TrackSymbol.extend({
     getAssignedModeFlag: function(){
         return this._assignedModeFlag;
     },
+    
+    getAssignedModeFlagText: function(){        
+        switch (this.getAssignedModeFlag()){
+            case 0:
+                return "Station operating in autonomous and continuous mode";
+            case 1:
+                return "Station operating in assigned mode";            
+        }
+    },
+
     setNameOfAtoN: function(nameOfAtoN){
         this._nameOfAtoN = nameOfAtoN;
     },
