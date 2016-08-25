@@ -544,7 +544,7 @@ L.AISTrack = L.TrackSymbol.extend({
 
     setCog: function(cog){
         this._cog = cog;
-        this._course = cog;
+        this.setCourse(cog)
     },
 
     getTrueHeading: function(){
