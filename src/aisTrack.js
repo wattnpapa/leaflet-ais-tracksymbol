@@ -57,6 +57,7 @@ L.AISTrack = L.TrackSymbol.extend({
     },
     addData: function(aisData){
         this.setMmsi(aisData.mmsi);
+        this.setMsgId(aisData.aisMsgId);
         if(aisData.navigationStatus) this.setNavigationStatus(aisData.navigationStatus);
         if(aisData.rot) this.setRot(aisData.rot);
         if(aisData.sog) this.setSog(aisData.sog);
@@ -213,7 +214,15 @@ L.AISTrack = L.TrackSymbol.extend({
                 this.setFillColor("#d3d3d3");
         }
     },
+        
+    getMsgId: function(){
+        return this._msgId;
+    },
 
+    setMsgId: function(msgId){
+        this._msgId = msgId;
+    },
+    
     getMmsi: function(){
         return this._mmsi;
     },
