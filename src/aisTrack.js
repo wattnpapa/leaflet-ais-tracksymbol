@@ -16,6 +16,7 @@ L.AISTrack = L.TrackSymbol.extend({
         this.setColor(options.color || '#000000');
         this.setOpacity(options.opacity || 1.0);
         this.setWeight(options.weight || 1.0);
+        this._leaderTime = 300;
         options.course = options.cog || 0;
 
         this.setMmsi(options.mssi || 0);
@@ -49,8 +50,6 @@ L.AISTrack = L.TrackSymbol.extend({
         this._referencePositionD = options.referencePositionD || 0;
         this._typeOfDevice = options.typeOfDevice || 0;
         this.setLastUpdate();
-
-        //this._leaderTime = 600;
 
         this.bindLabel();
         this.bindPopup("",{className: "ais-track-popup"});
