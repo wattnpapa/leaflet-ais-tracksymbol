@@ -5,7 +5,7 @@
 L.AISTrack = L.TrackSymbol.extend({
 
     initialize: function (options) {
-        L.TrackSymbol.prototype.initialize.call(this,L.latLng(52.0,8.0) , options);
+        L.TrackSymbol.prototype.initialize.call(this,L.latLng(0.0,0.0) , options);
         options = options || {};
 
         //this.setTrackId(options.trackId || this._mmsi);
