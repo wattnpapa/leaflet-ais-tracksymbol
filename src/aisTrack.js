@@ -69,13 +69,15 @@ L.AISTrack = L.TrackSymbol.extend({
         this.setMmsi(aisData.mmsi);
         this.setMsgId(aisData.aisMsgId);
         if(aisData.navigationStatus) this.setNavigationStatus(aisData.navigationStatus);
-        if(aisData.rot) this.setRot(aisData.rot);
-        if(aisData.sog) this.setSog(aisData.sog);
+
         if(aisData.positionAccuracy) this.setPositionAccuracy(aisData.positionAccuracy);
         if(aisData.latitude) this.setLatitude(aisData.latitude);
         if(aisData.longitude) this.setLongitude(aisData.longitude);
+
         if(this.getLatitude() && this.getLongitude()) this.setLatLng(L.latLng(this.getLatitude(), this.getLongitude()));
 
+        if(aisData.rot) this.setRot(aisData.rot);
+        if(aisData.sog) this.setSog(aisData.sog);
         if(aisData.trueHeading) this.setTrueHeading(aisData.trueHeading);
         if(aisData.timeStamp) this.setTimeStamp(aisData.timeStamp);
         if(aisData.specialManoeuvreIndicator) this.setSpecialManoeuvreIndicator(aisData.specialManoeuvreIndicator);
@@ -95,7 +97,7 @@ L.AISTrack = L.TrackSymbol.extend({
         if(aisData.maxPresentStaticDraught) this.setMaxPresentStaticDraught(aisData.maxPresentStaticDraught);
         if(aisData.destination) this.setDestination(aisData.destination);
         if(aisData.dte) this.setDte(aisData.dte);
-
+        if(aisData.cog) this.setCog(aisData.cog);      
         if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
         if(aisData.typeOfAtoN) this.setTypeOfAtoN(aisData.typeOfAtoN);
         if(aisData.nameOfAtoN) this.setName(aisData.nameOfAtoN);
@@ -113,7 +115,7 @@ L.AISTrack = L.TrackSymbol.extend({
     },
 
     _labelAndPopupUpdate: function (){
-        this.updateLabelContent(this.getMmsi() + " " + this.getName());
+        this.updateLabelContent(this.getMmsi() + " " + this.getName());                
         if(this._popup){
             this._popup.setContent(this._getPopupContent());
             //this._popup.update();
