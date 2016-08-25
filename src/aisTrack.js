@@ -57,6 +57,7 @@ L.AISTrack = L.TrackSymbol.extend({
         this._utcHour = options.utcHour || 24;
         this._utcMinute = options.utcMinute || 60;
         this._utcSecond = options.utcSecond || 60;
+        this._virtualAtoNFlag = options.virtualAtoNFlag || 0;
         this.setLastUpdate();
 
         this.bindLabel();
@@ -96,6 +97,8 @@ L.AISTrack = L.TrackSymbol.extend({
 
         if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
         if(aisData.typeOfAtoN) this.setTypeOfAtoN(aisData.typeOfAtoN);
+        if(aisData.nameOfAtoN) this.setName(aisData.nameOfAtoN);
+        if(aisData.virtualAtoNFlag) this.setVirtualAtoNFlag(aisData.virtualAtoNFlag);
         if(aisData.utcYear) this.setUTCYear(aisData.utcYear);
         if(aisData.utcMonth) this.setUTCMonth(aisData.utcMonth);
         if(aisData.utcDay) this.setUTCDay(aisData.utcDay);
@@ -437,6 +440,15 @@ L.AISTrack = L.TrackSymbol.extend({
     getNameOfAtoN: function(){
         return this._nameOfAtoN;
     },
+    
+    setVirtualAtoNFlag: function(virtualAtoNFlag){
+        this._virtualAtoNFlag = virtualAtoNFlag;        
+    },
+    
+    getVirtualAtoNFlag: function(){
+        return this._virtualAtoNFlag;
+    },
+    
     setNameOfAtoN: function(nameOfAtoN){
         this._nameOfAtoN = nameOfAtoN;
     },
