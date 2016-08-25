@@ -554,6 +554,38 @@ L.AISTrack = L.TrackSymbol.extend({
     getTypeOfDevice: function(){
         return this._typeOfDevice;
     },
+    
+    getTypeOfDeviceText: function(){
+        this._setColorByTypeOfDevice();
+        switch (this.getTypeOfDevice()){
+            case 0:
+                return "undefined (default)";
+            case 1:
+                return "global positioning system (GPS)";
+            case 2:
+                return "GNSS (GLONASS)";
+            case 3:
+                return "combined GPS/GLONASS";
+            case 4:
+                return "Loran-C";
+            case 5:
+                return "Chayka";
+            case 6:
+                return "integrated navigation system";
+            case 7:
+                return "surveyed";
+            case 8:
+                return "Galileo";
+            case 9:
+            case 10:                
+            case 11:                
+            case 12:                
+            case 13:                
+            case 14:                
+            case 15:
+                return "internal GNSS";
+        }
+    },
 
     setTypeOfDevice: function(typeOfDevice){
         this._typeOfDevice = typeOfDevice;        
