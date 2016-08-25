@@ -58,6 +58,7 @@ L.AISTrack = L.TrackSymbol.extend({
         this._utcMinute = options.utcMinute || 60;
         this._utcSecond = options.utcSecond || 60;
         this._virtualAtoNFlag = options.virtualAtoNFlag || 0;
+        this._assignedModeFlag = options.assignedModeFlag || 0;
         this.setLastUpdate();
 
         this.bindLabel();
@@ -99,6 +100,7 @@ L.AISTrack = L.TrackSymbol.extend({
         if(aisData.typeOfAtoN) this.setTypeOfAtoN(aisData.typeOfAtoN);
         if(aisData.nameOfAtoN) this.setName(aisData.nameOfAtoN);
         if(aisData.virtualAtoNFlag) this.setVirtualAtoNFlag(aisData.virtualAtoNFlag);
+        if(aisData.assignedModeFlag) this.setAssignedModeFlag(aisData.assignedModeFlag); 
         if(aisData.utcYear) this.setUTCYear(aisData.utcYear);
         if(aisData.utcMonth) this.setUTCMonth(aisData.utcMonth);
         if(aisData.utcDay) this.setUTCDay(aisData.utcDay);
@@ -449,6 +451,14 @@ L.AISTrack = L.TrackSymbol.extend({
         return this._virtualAtoNFlag;
     },
     
+    
+    setAssignedModeFlag: function(assignedModeFlag){
+        this._assignedModeFlag = assignedModeFlag;        
+    },
+    
+    getAssignedModeFlag: function(){
+        return this._assignedModeFlag;
+    },
     setNameOfAtoN: function(nameOfAtoN){
         this._nameOfAtoN = nameOfAtoN;
     },
