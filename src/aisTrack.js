@@ -49,6 +49,7 @@ L.AISTrack = L.TrackSymbol.extend({
         this._referencePositionC = options.referencePositionC || 0;
         this._referencePositionD = options.referencePositionD || 0;
         this._typeOfDevice = options.typeOfDevice || 0;
+        this._typeOfAtoN = options.typeOfAtoN || 0;
         this.setLastUpdate();
 
         this.bindLabel();
@@ -87,6 +88,7 @@ L.AISTrack = L.TrackSymbol.extend({
         if(aisData.dte) this.setDte(aisData.dte);
 
         if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
+        if(aisData.typeOfAtoN) this.setTypeOfAtoN(aisData.typeOfAtoN);
         this._setNameByMMSITable();
         this.setLastUpdate();
         this._labelAndPopupUpdate();
@@ -409,6 +411,14 @@ L.AISTrack = L.TrackSymbol.extend({
     setTypeOfShipAndCargo: function(typeOfShipAndCargo){
         this._typeOfShipAndCargo = typeOfShipAndCargo;
         this._setColorsByTypeOfShip();
+    },
+    
+    getTypeOfAtoN: function(){
+        return this._typeOfAtoN;
+    },    
+
+    setTypeOfAtoN: function(typeOfAtoN){
+        this._typeOfAtoN = typeOfAtoN;        
     },
 
     getEta: function(){
