@@ -776,12 +776,12 @@ L.AISTrack = L.TrackSymbol.extend({
         this._referencePositionD = referencePositionD;
     },
 
-    getTypeOfDevice: function(){
-        return this._typeOfDevice;
+    getShipLength: function(){
+        return this._referencePositionA + this._referencePositionB;
     },
 
-    setTypeOfDevice: function(typeOfDevice){
-        this._typeOfDevice = typeOfDevice;
+    getShipWidth: function(){
+        return this._referencePositionC + this._referencePositionD;
     },
 
     getLastUpdate: function(){
