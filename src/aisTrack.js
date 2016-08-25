@@ -50,6 +50,12 @@ L.AISTrack = L.TrackSymbol.extend({
         this._referencePositionD = options.referencePositionD || 0;
         this._typeOfDevice = options.typeOfDevice || 0;
         this._typeOfAtoN = options.typeOfAtoN || 0;
+        this._utcYear = options.utcYear || 0;
+        this._utcMonth = options.utcMonth || 0;
+        this._utcDay = options.utcDay || 0;
+        this._utcHour = options.utcHour || 24;
+        this._utcMinute = options.utcMinute || 60;
+        this._utcSecond = options.utcSecond || 60;
         this.setLastUpdate();
 
         this.bindLabel();
@@ -89,6 +95,12 @@ L.AISTrack = L.TrackSymbol.extend({
 
         if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
         if(aisData.typeOfAtoN) this.setTypeOfAtoN(aisData.typeOfAtoN);
+        if(aisData.utcYear) this.setUTCYear(aisData.utcYear);
+        if(aisData.utcMonth) this.setUTCMonth(aisData.utcMonth);
+        if(aisData.utcDay) this.setUTCDay(aisData.utcDay);
+        if(aisData.utcHour) this.setUTCHour(aisData.utcHour);
+        if(aisData.utcMinute) this.setUTCMinute(aisData.utcMinute);
+        if(aisData.utcSecond) this.setUTCSecond(aisData.utcSecond);
         this._setNameByMMSITable();
         this.setLastUpdate();
         this._labelAndPopupUpdate();
@@ -420,6 +432,74 @@ L.AISTrack = L.TrackSymbol.extend({
     setTypeOfAtoN: function(typeOfAtoN){
         this._typeOfAtoN = typeOfAtoN;        
     },
+    
+    setUTCYear: function(utcYear){
+        this._utcYear = utcYear;        
+    },
+    
+    getUTCYear: function(){
+        return this._utcYear;
+    },
+    
+    setUTCMonth: function(utcMonth){
+        if (utcMonth >= 10)
+            this._utcMonth = utcMonth;
+        else
+            this._utcMonth = "0" + utcMonth;
+    },
+    
+    getUTCMonth: function(){
+        return this._utcMonth;
+    },
+    
+    setUTCDay: function(utcDay){
+        if (utcDay >= 10)
+            this._utcDay = utcDay;
+        else
+            this._utcDay = "0" + utcDay;
+    },
+    
+    getUTCDay: function(){
+        return this._utcDay;
+    },
+    
+    setUTCHour: function(utcHour){
+        if (utcHour >= 10)
+            this._utcHour = utcHour; 
+        else
+            this._utcHour = "0" + utcHour;               
+    },
+    
+    getUTCHour: function(){
+        return this._utcHour;
+    },
+    
+    setUTCMinute: function(utcMinute){
+        if (utcMinute >= 10)
+            this._utcMinute = utcMinute;
+        else
+            this._utcMinute = "0" + utcMinute;
+    },
+    
+    getUTCMinute: function(){
+        return this._utcMinute;
+    },
+    
+    setUTCSecond: function(utcSecond){
+        if (utcSecond >= 10)
+            this._utcSecond = utcSecond;
+        else
+            this._utcSecond = "0" + utcSecond;
+    },
+    
+    getUTCSecond: function(){
+        return this._utcSecond;
+    },
+    
+    getUTCTime: function(){
+       return this.getUTCYear() + "." + this.getUTCMonth() + "." + this.getUTCDay() + " " + this.getUTCHour() + ":" + this.getUTCMinute() + ":" + this.getUTCSecond() + " UTC";
+    },
+    
 
     getEta: function(){
         return this._eta;
