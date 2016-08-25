@@ -50,6 +50,7 @@ L.AISTrack = L.TrackSymbol.extend({
         this._referencePositionD = options.referencePositionD || 0;
         this._typeOfDevice = options.typeOfDevice || 0;
         this._typeOfAtoN = options.typeOfAtoN || 0;
+        this._nameOfAtoN = options.nameOfAtoN || "";
         this._utcYear = options.utcYear || 0;
         this._utcMonth = options.utcMonth || 0;
         this._utcDay = options.utcDay || 0;
@@ -431,6 +432,13 @@ L.AISTrack = L.TrackSymbol.extend({
 
     setTypeOfAtoN: function(typeOfAtoN){
         this._typeOfAtoN = typeOfAtoN;        
+    },
+    
+    getNameOfAtoN: function(){
+        return this._nameOfAtoN;
+    },
+    setNameOfAtoN: function(nameOfAtoN){
+        this._nameOfAtoN = nameOfAtoN;
     },
     
     setUTCYear: function(utcYear){
