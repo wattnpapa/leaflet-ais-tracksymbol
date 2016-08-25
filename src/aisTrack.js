@@ -143,80 +143,211 @@ L.AISTrack = L.TrackSymbol.extend({
 
     _setColorsByTypeOfShip: function(){
         switch (this.getTypeOfShipAndCargo()){
-            case 0: //FISHING
+            case 0: //NOT AVAILABLE OR NO SHIP
+                this.setColor("#000000");
+                this.setFillColor("#d3d3d3");
+                break;
+            case 1: //RESERVED               
+            case 2: //RESERVED
+            case 3: //RESERVED
+            case 4: //RESERVED
+            case 5: //RESERVED
+            case 6: //RESERVED
+            case 8: //RESERVED
+            case 9: //RESERVED
+            case 10: //RESERVED
+            case 11: //RESERVED
+            case 12: //RESERVED
+            case 13: //RESERVED
+            case 14: //RESERVED
+            case 15: //RESERVED
+            case 16: //RESERVED
+            case 17: //RESERVED
+            case 18: //RESERVED
+            case 19: //RESERVED
+                this.setColor("#000000");
+                this.setFillColor("#d3d3d3");
+                break;
+            case 20: //Wing In Grnd
+            case 21: //Wing In Grnd
+            case 22: //Wing In Grnd
+            case 23: //Wing In Grnd
+            case 24: //Wing In Grnd
+            case 25: //Wing In Grnd
+            case 26: //Wing In Grnd
+            case 27: //Wing In Grnd
+            case 28: //Wing In Grnd
+                this.setColor("#000000");
+                this.setFillColor("#d3d3d3");
+                break;
+            case 29: //SAR AIRCRAFT
+                this.setColor("#000000");
+                this.setFillColor("#d3d3d3");
+                break;
+            case 30: //Fishing
                 this.setColor("#800000");
                 this.setFillColor("#ffa07a");
                 break;
-            case 7: //Pleasure craft
-                this.setColor("#8b008b");
-                this.setFillColor("#ff00ff");
-                break;
-            case 40:
-            case 41:
-            case 42:
-            case 43:
-            case 44:
-            case 45:
-            case 46:
-            case 47:
-            case 48:
-            case 49: //HSC
-                this.setColor("#00008b");
-                this.setFillColor("#90ee90");
-                break;
-            case 50: //PILOT
-            case 51: //SAR
-            case 52: //TUGS
-            case 53: //Port tenders
-            case 54: //Vessels with anti-pollution facilities or equipment
-            case 55: //Law enforcement vessels
-            case 56: //Spare – for assignments to local vessels
-            case 57: //Spare – for assignments to local vessels
-            case 58: //Medical transports (as defined in the 1949 Geneva Conventions and Additional Protocols)
-            case 59: //Ships and aircraft of States not parties to an armed conflict
+            case 31: //Tug
+            case 32: //Tug
                 this.setColor("#008b8b");
                 this.setFillColor("#00ffff");
                 break;
-            case 60:
-            case 61:
-            case 62:
-            case 63:
-            case 64:
-            case 65:
-            case 66:
-            case 67:
-            case 68:
+            case 33: //Dredger
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 34: //Dive Vessel
+            case 35: //Military Ops
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 36: //Sailing Vessel
+                this.setColor("#8b008b");
+                this.setFillColor("#ff00ff");
+                break;
+            case 37: //Pleasure Craft
+                this.setColor("#8b008b");
+                this.setFillColor("#ff00ff");
+                break;
+            case 38: //RESERVED
+            case 39: //RESERVED
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 40: //High-Speed Craft
+            case 41: //High-Speed Craft
+            case 42: //High-Speed Craft
+            case 43: //High-Speed Craft
+            case 44: //High-Speed Craft
+            case 45: //High-Speed Craft
+            case 46: //High-Speed Craft
+            case 47: //High-Speed Craft
+            case 48: //High-Speed Craft
+            case 49: //High-Speed Craft
+                this.setColor("#00008b");
+                this.setFillColor("#ffff00");
+                break;
+            case 50: //Pilot Vessel
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 51: //SAR
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 52: //Tug
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 53: //Port Tender
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 54: //Anti-Pollution
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 55: //Law Enforce
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 56: //Local Vessel
+            case 57: //Local Vessel
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 58: //Medical Trans (as defined in the 1949 Geneva Conventions and Additional Protocols)
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 59: //Special Craft
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            case 60: //Passenger
+            case 61: //Passenger
+            case 62: //Passenger
+            case 63: //Passenger
+            case 64: //Passenger
+            case 65: //Passenger
+            case 66: //Passenger
+            case 67: //Passenger
+            case 68: //Passenger
             case 69: //Passenger
                 this.setColor("#00008b");
                 this.setFillColor("#0000ff");
                 break;
-            case 70:
-            case 71:
-            case 72:
-            case 73:
-            case 74:
-            case 75:
-            case 76:
-            case 77:
-            case 78:
+            case 70: //Cargo
+                this.setColor("#006400");
+                this.setFillColor("#90ee90");
+                break;
+            case 71: //Cargo - Hazard A
+                this.setColor("#006400");
+                this.setFillColor("#90ee90");
+                break;
+            case 72: //Cargo - Hazard B
+                this.setColor("#006400");
+                this.setFillColor("#90ee90");
+                break;
+            case 73: //Cargo - Hazard C
+                this.setColor("#006400");
+                this.setFillColor("#90ee90");
+                break;
+            case 74: //Cargo - Hazard D
+                this.setColor("#006400");
+                this.setFillColor("#90ee90");
+                break;
+            case 75: //Cargo
+            case 76: //Cargo
+            case 77: //Cargo
+            case 78: //Cargo
             case 79: //Cargo
                 this.setColor("#006400");
                 this.setFillColor("#90ee90");
                 break;
-            case 80:
-            case 81:
-            case 82:
-            case 83:
-            case 84:
-            case 85:
-            case 86:
-            case 87:
-            case 88:
-            case 89: //TANKER
+            case 80: //Tanker
                 this.setColor("#8b0000");
                 this.setFillColor("#ff0000");
                 break;
-            default: //Defauult
+            case 81: //Tanker - Hazard A
+                this.setColor("#8b0000");
+                this.setFillColor("#ff0000");
+                break;
+            case 82: //Tanker - Hazard B
+                this.setColor("#8b0000");
+                this.setFillColor("#ff0000");
+                break;
+            case 83: //Tanker - Hazard C
+                this.setColor("#8b0000");
+                this.setFillColor("#ff0000");
+                break;
+            case 84: //Tanker - Hazard D
+                this.setColor("#8b0000");
+                this.setFillColor("#ff0000");
+                break;
+            case 85: //Tanker
+            case 86: //Tanker
+            case 87: //Tanker
+            case 88: //Tanker
+            case 89: //Tanker
+                this.setColor("#8b0000");
+                this.setFillColor("#ff0000");
+                break;
+            case 90: //Other
+            case 91: //Other
+            case 92: //Other
+            case 93: //Other
+            case 94: //Other
+            case 95: //Other
+            case 96: //Other
+            case 97: //Other
+            case 98: //Other
+            case 99: //Other
+                this.setColor("#008b8b");
+                this.setFillColor("#00ffff");
+                break;
+            default: //Default
                 this.setColor("#000000");
                 this.setFillColor("#d3d3d3");
         }
