@@ -128,19 +128,43 @@ L.AISTrack = L.TrackSymbol.extend({
 
         var content = "<div class='ais-popup-header'>"+headerText+"</div>" +
             "<div class='ais-popup-content'>" +
-            "<table>";
+            "<table>";          
         content += this._getTableRow("MSSI",this.getMmsi());
-        content += this._getTableRow("Name",this.getName());
-        content += this._getTableRow("IMO",this.getImoNumber());
-        content += this._getTableRow("Call",this.getCallSign());
-        content += this._getTableRow("Speed",this.getSog()," kn");
-        content += this._getTableRow("Course",this.getCogDeg(),"&deg;");
-        content += this._getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
-        content += this._getTableRow("Destination",this.getDestination());
-        content += this._getTableRow("ETA",this.getEta());
-        content += this._getTableRow("Navigation Status",this.getNavigationStatus()," "+this.getNavigationStatusText());
-        content += this._getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
-        content += this._getTableRow("Last AIS Message",this.getLastUpdate());
+        
+        if (this.getMsgId() == 1 || this.getMsgId() == 2 || this.getMsgId() == 3 || this.getMsgId() == 5)
+        {
+            content += this._getTableRow("Name",this.getName());
+            content += this._getTableRow("IMO",this.getImoNumber());
+            content += this._getTableRow("Callsign",this.getCallSign());
+            content += this._getTableRow("Speed",this.getSog()," kn" + " | " + this.getSogKmH() + " km/h ");
+            content += this._getTableRow("Course",this.getCogDeg(),"&deg;");
+            content += this._getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
+            content += this._getTableRow("Destination",this.getDestination());
+            content += this._getTableRow("ETA",this.getEta());
+            content += this._getTableRow("Nav. Status",this.getNavigationStatusText());
+            content += this._getTableRow("Length",this.getShipLength()," m");
+            content += this._getTableRow("Width",this.getShipWidth()," m");
+            content += this._getTableRow("TypeOfShip",this.getTypeOfShipText());
+            content += this._getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
+        }
+        if(this.getMsgId() == 4)
+        {
+            content += this._getTableRow("Name",this.getName());
+            content += this._getTableRow("TypeOfDevice",this.getTypeOfDeviceText());
+            content += this._getTableRow("Time",this.getUTCTime());
+        }
+        if(this.getMsgId() == 21)
+        {            
+            content += this._getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
+            content += this._getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
+            content += this._getTableRow("AssignedMode",this.getAssignedModeFlagText());
+            content += this._getTableRow("RefA",this.getReferencePositionA());
+            content += this._getTableRow("RefB",this.getReferencePositionB());
+            content += this._getTableRow("RefC",this.getReferencePositionC());
+            content += this._getTableRow("RefD",this.getReferencePositionD());
+        }
+        content += this._getTableRow("Last AIS Msg",this.getLastUpdate());
+        //content += "<tr><td colspan='2'><img src='getShipImage.php?mmsi="+this.getMmsi()+"' width='250'/></td>";
         content += "</table></div>";
         content += "<div class='ais-popup-footer'>More Details on <a href='http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi()+"' target='_blank'>MarineTraffic.com</a></div>"
         return content;
