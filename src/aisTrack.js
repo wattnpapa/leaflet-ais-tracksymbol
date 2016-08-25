@@ -720,15 +720,17 @@ L.AISTrack = L.TrackSymbol.extend({
             case 8:
                 return "under way sailing";
             case 9:
-            case 10:
+            case 10:                
             case 11:
+                return "power-driven vessel towing astern";
             case 12:
+                return "power-driven vessel pushing ahead or towing alongside";
             case 13:
-                return "-";
+                return "reserved for future use";
             case 14:
                 return "AIS-SART (active)";
             case 15:
-                return "AIS-SART (test)";
+                return "undefined"; //also used by AIS-SART, MOB-AIS and EPIRB-AIS under test
         }
     },
 
