@@ -87,6 +87,7 @@ L.AISTrack = L.TrackSymbol.extend({
         if(aisData.dte) this.setDte(aisData.dte);
 
         if(this.getReferencePositions()) this.setGPSRefPos(this.getReferencePositions());
+        this._setNameByMMSITable();
         this.setLastUpdate();
         this._labelAndPopupUpdate();
     },
@@ -132,6 +133,12 @@ L.AISTrack = L.TrackSymbol.extend({
                 "<td>" + content + unit + "</td>" +
                 "</tr>";
         return "";
+    },
+    
+    _setNameByMMSITable: function(){
+        if (typeof MMSI !== 'undefined')
+            if(MMSI[this.getMmsi()])
+                this.setName(MMSI[this.getMmsi()]);
     },
 
     _setColorsByTypeOfShip: function(){
