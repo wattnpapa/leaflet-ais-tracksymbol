@@ -550,6 +550,14 @@ L.AISTrack = L.TrackSymbol.extend({
        return this.getUTCYear() + "." + this.getUTCMonth() + "." + this.getUTCDay() + " " + this.getUTCHour() + ":" + this.getUTCMinute() + ":" + this.getUTCSecond() + " UTC";
     },
     
+    
+    getTypeOfDevice: function(){
+        return this._typeOfDevice;
+    },
+
+    setTypeOfDevice: function(typeOfDevice){
+        this._typeOfDevice = typeOfDevice;        
+    },
 
     getEta: function(){
         return this._eta;
