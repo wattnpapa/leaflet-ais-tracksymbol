@@ -462,7 +462,7 @@ L.AISTrack = L.TrackSymbol.extend({
     },    
     
     getTypeOfAtoNText: function(){
-        this._setColorByTypeOfAtoN();
+        //this._setColorByTypeOfAtoN();
         switch (this.getTypeOfAtoN()){
             case 0:
                 return "Default, Type of AtoN not specified";
@@ -650,7 +650,7 @@ L.AISTrack = L.TrackSymbol.extend({
     },
     
     getTypeOfDeviceText: function(){
-        this._setColorByTypeOfDevice();
+        //this._setColorByTypeOfDevice();
         switch (this.getTypeOfDevice()){
             case 0:
                 return "undefined (default)";
