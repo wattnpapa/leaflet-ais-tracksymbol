@@ -2,8 +2,15 @@
  * Created by Johannes Rudolph <johannes.rudolph@gmx.de> on 10.02.2016.
  */
 
+/**
+ *
+ */
 L.AISTrack = L.TrackSymbol.extend({
 
+    /**
+     *
+     * @param options
+     */
     initialize: function (options) {
         L.TrackSymbol.prototype.initialize.call(this,L.latLng(0.0,0.0) , options);
         options = options || {};
@@ -65,6 +72,11 @@ L.AISTrack = L.TrackSymbol.extend({
         this.bindPopup("",{className: "ais-track-popup"});
 
     },
+
+    /**
+     *
+     * @param aisData
+     */
     addData: function(aisData){
         this.setMmsi(aisData.mmsi);
         this.setMsgId(aisData.aisMsgId);
@@ -114,6 +126,10 @@ L.AISTrack = L.TrackSymbol.extend({
         this._labelAndPopupUpdate();
     },
 
+    /**
+     *
+     * @private
+     */
     _labelAndPopupUpdate: function (){
         this.updateLabelContent(this.getMmsi() + " " + this.getName());                
         if(this._popup){
@@ -122,6 +138,11 @@ L.AISTrack = L.TrackSymbol.extend({
         }
     },
 
+    /**
+     *
+     * @returns {string}
+     * @private
+     */
     _getPopupContent: function() {
         var headerText = this.getName().length !== 0  ? this.getName() : "MSSI: " + this.getMmsi();
 
@@ -170,6 +191,14 @@ L.AISTrack = L.TrackSymbol.extend({
         return content;
     },
 
+    /**
+     *
+     * @param title
+     * @param content
+     * @param unit
+     * @returns {*}
+     * @private
+     */
     _getTableRow: function(title,content,unit){
         if(!unit)
             unit = "";
@@ -181,12 +210,21 @@ L.AISTrack = L.TrackSymbol.extend({
         return "";
     },
     
+
+    /**
+     *
+     * @private
+     */
     _setNameByMMSITable: function(){
         if (typeof MMSI !== 'undefined')
             if(MMSI[this.getMmsi()])
                 this.setName(MMSI[this.getMmsi()]);
     },
 
+    /**
+     *
+     * @private
+     */
     _setColorsByTypeOfShip: function(){
         switch (this.getTypeOfShipAndCargo()){
             case 0: //NOT AVAILABLE OR NO SHIP
@@ -398,69 +436,133 @@ L.AISTrack = L.TrackSymbol.extend({
                 this.setFillColor("#d3d3d3");
         }
     },
-        
+
+    /**
+     *
+     * @returns {*}
+     */
     getMsgId: function(){
         return this._msgId;
     },
 
+    /**
+     *
+     * @param msgId
+     */
     setMsgId: function(msgId){
         this._msgId = msgId;
     },
-    
+
+    /**
+     *
+     * @returns {*}
+     */
     getMmsi: function(){
         return this._mmsi;
     },
 
+    /**
+     *
+     * @param mmsi
+     */
     setMmsi: function(mmsi){
         this._mmsi = mmsi;
         this._leaflet_id = mmsi;
     },
 
+    /**
+     *
+     * @returns {*|number}
+     */
     getAisVersionIndicator: function(){
         return this._aisVersionIndicator;
     },
 
+    /**
+     *
+     * @param aisVersionIndicator
+     */
     setAisVersionIndicator: function(aisVersionIndicator){
         this._aisVersionIndicator = aisVersionIndicator;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getImoNumber: function() {
         return this._imoNumber;
     },
 
+    /**
+     *
+     * @param imoNumber
+     */
     setImoNumber: function(imoNumber){
         this._imoNumber = imoNumber;
     },
 
+    /**
+     *
+     * @returns {*|string}
+     */
     getCallSign: function(){
         return this._callSign;
     },
 
+    /**
+     *
+     * @param callSign
+     */
     setCallSign: function(callSign){
         this._callSign = callSign;
     },
 
+    /**
+     *
+     * @returns {*|string}
+     */
     getName: function(){
         return this._name;
     },
 
+    /**
+     *
+     * @param name
+     */
     setName: function(name){
         this._name = name;
     },
 
+    /**
+     *
+     * @returns {*|number}
+     */
     getTypeOfShipAndCargo: function(){
         return this._typeOfShipAndCargo;
     },
 
+    /**
+     *
+     * @param typeOfShipAndCargo
+     */
     setTypeOfShipAndCargo: function(typeOfShipAndCargo){
         this._typeOfShipAndCargo = typeOfShipAndCargo;
         this._setColorsByTypeOfShip();
     },
-    
+
+    /**
+     *
+     * @returns {*|number}
+     */
     getTypeOfAtoN: function(){
         return this._typeOfAtoN;
-    },    
-    
+    },
+
+    /**
+     *
+     * @returns {*}
+     */
     getTypeOfAtoNText: function(){
         //this._setColorByTypeOfAtoN();
         switch (this.getTypeOfAtoN()){
@@ -531,22 +633,42 @@ L.AISTrack = L.TrackSymbol.extend({
         }
     },
 
+    /**
+     *
+     * @param typeOfAtoN
+     */
     setTypeOfAtoN: function(typeOfAtoN){
         this._typeOfAtoN = typeOfAtoN;        
     },
-    
+
+    /**
+     *
+     * @returns {*}
+     */
     getNameOfAtoN: function(){
         return this._nameOfAtoN;
     },
-    
+
+    /**
+     *
+     * @param virtualAtoNFlag
+     */
     setVirtualAtoNFlag: function(virtualAtoNFlag){
         this._virtualAtoNFlag = virtualAtoNFlag;        
     },
-    
+
+    /**
+     *
+     * @returns {*|number}
+     */
     getVirtualAtoNFlag: function(){
         return this._virtualAtoNFlag;
     },
-    
+
+    /**
+     *
+     * @returns {*}
+     */
     getVirtualAtoNFlagText: function(){        
         switch (this.getVirtualAtoNFlag()){
             case 0:
@@ -555,15 +677,27 @@ L.AISTrack = L.TrackSymbol.extend({
                 return "virtual AtoN, does not physically exist";            
         }
     },
-    
+
+    /**
+     *
+     * @param assignedModeFlag
+     */
     setAssignedModeFlag: function(assignedModeFlag){
         this._assignedModeFlag = assignedModeFlag;        
     },
-    
+
+    /**
+     *
+     * @returns {*}
+     */
     getAssignedModeFlag: function(){
         return this._assignedModeFlag;
     },
-    
+
+    /**
+     *
+     * @returns {*}
+     */
     getAssignedModeFlagText: function(){        
         switch (this.getAssignedModeFlag()){
             case 0:
@@ -573,82 +707,145 @@ L.AISTrack = L.TrackSymbol.extend({
         }
     },
 
+    /**
+     *
+     * @param nameOfAtoN
+     */
     setNameOfAtoN: function(nameOfAtoN){
         this._nameOfAtoN = nameOfAtoN;
     },
-    
+
+    /**
+     *
+     * @param utcYear
+     */
     setUTCYear: function(utcYear){
         this._utcYear = utcYear;        
     },
-    
+
+    /**
+     *
+     * @returns {*}
+     */
     getUTCYear: function(){
         return this._utcYear;
     },
-    
+
+    /**
+     *
+     * @param utcMonth
+     */
     setUTCMonth: function(utcMonth){
         if (utcMonth >= 10)
             this._utcMonth = utcMonth;
         else
             this._utcMonth = "0" + utcMonth;
     },
-    
+
+    /**
+     *
+     * @returns {*|number}
+     */
     getUTCMonth: function(){
         return this._utcMonth;
     },
-    
+
+    /**
+     *
+     * @param utcDay
+     */
     setUTCDay: function(utcDay){
         if (utcDay >= 10)
             this._utcDay = utcDay;
         else
             this._utcDay = "0" + utcDay;
     },
-    
+
+    /**
+     *
+     * @returns {*|number}
+     */
     getUTCDay: function(){
         return this._utcDay;
     },
-    
+
+    /**
+     *
+     * @param utcHour
+     */
     setUTCHour: function(utcHour){
         if (utcHour >= 10)
             this._utcHour = utcHour; 
         else
             this._utcHour = "0" + utcHour;               
     },
-    
+
+    /**
+     *
+     * @returns {*}
+     */
     getUTCHour: function(){
         return this._utcHour;
     },
-    
+
+    /**
+     *
+     * @param utcMinute
+     */
     setUTCMinute: function(utcMinute){
         if (utcMinute >= 10)
             this._utcMinute = utcMinute;
         else
             this._utcMinute = "0" + utcMinute;
     },
-    
+
+    /**
+     *
+     * @returns {*|number}
+     */
     getUTCMinute: function(){
         return this._utcMinute;
     },
-    
+
+    /**
+     *
+     * @param utcSecond
+     */
     setUTCSecond: function(utcSecond){
         if (utcSecond >= 10)
             this._utcSecond = utcSecond;
         else
             this._utcSecond = "0" + utcSecond;
     },
-    
+
+    /**
+     *
+     * @returns {*|number}
+     */
     getUTCSecond: function(){
         return this._utcSecond;
     },
-    
+
+    /**
+     *
+     * @returns {string}
+     */
     getUTCTime: function(){
        return this.getUTCYear() + "." + this.getUTCMonth() + "." + this.getUTCDay() + " " + this.getUTCHour() + ":" + this.getUTCMinute() + ":" + this.getUTCSecond() + " UTC";
     },
-    
-    
+
+    /**
+     *
+     * @returns {*|number}
+     */
     getTypeOfDevice: function(){
         return this._typeOfDevice;
     },
-    
+
+    /**
+     *
+     * @returns {*}
+     */
     getTypeOfDeviceText: function(){
         //this._setColorByTypeOfDevice();
         switch (this.getTypeOfDevice()){
@@ -681,48 +878,92 @@ L.AISTrack = L.TrackSymbol.extend({
         }
     },
 
+    /**
+     *
+     * @param typeOfDevice
+     */
     setTypeOfDevice: function(typeOfDevice){
         this._typeOfDevice = typeOfDevice;        
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getEta: function(){
         return this._eta;
     },
 
+    /**
+     *
+     * @param eta
+     */
     setEta: function(eta){
         this._eta = eta;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getMaxPresentStaticDraught: function(){
         return this._maxPresentStaticDraught;
     },
 
+    /**
+     *
+     * @param maxPresentStaticDraught
+     */
     setMaxPresentStaticDraught: function(maxPresentStaticDraught){
         this._maxPresentStaticDraught = maxPresentStaticDraught;
     },
 
+    /**
+     *
+     * @returns {*|string|boolean}
+     */
     getDestination: function(){
         return this._destination;
     },
 
+    /**
+     *
+     * @param destination
+     */
     setDestination: function(destination){
         if(destination.length === 0)
             destination = false;
         this._destination = destination;
     },
 
+    /**
+     *
+     * @returns {*|number}
+     */
     getDte: function(){
         return this._dte;
     },
 
+    /**
+     *
+     * @param dte
+     */
     setDte: function(dte){
         this._dte = dte;
     },
 
+    /**
+     *
+     * @returns {*|number}
+     */
     getNavigationStatus: function(){
         return this._navigationStatus;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getNavigationStatusText: function(){
         switch (this.getNavigationStatus()){
             case 0:
@@ -758,148 +999,288 @@ L.AISTrack = L.TrackSymbol.extend({
         }
     },
 
+    /**
+     *
+     * @param navigationStatus
+     */
     setNavigationStatus: function(navigationStatus){
         this._navigationStatus = navigationStatus;
     },
 
+    /**
+     *
+     * @returns {*|number}
+     */
     getRot: function(){
         return this._rot;
     },
 
+    /**
+     *
+     * @param rot
+     */
     setRot: function(rot){
         this._rot = rot;
     },
-    
+
+    /**
+     *
+     * @returns {string}
+     */
     getSogKmH: function(){
         var speedKmH = this._sog * 1.852;
         return speedKmH.toFixed(1);
     },
-    
+
+    /**
+     *
+     * @returns {*|number}
+     */
     getSog: function(){
         return this._sog;
     },
 
+    /**
+     *
+     * @param sog
+     */
     setSog: function(sog){
         this._sog = sog;
         this.setSpeed(sog);
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getPositionAccuracy: function(){
         return this._positionAccuracy;
     },
 
+    /**
+     *
+     * @param positionAccuracy
+     */
     setPositionAccuracy: function(positionAccuracy){
         this._positionAccuracy = positionAccuracy;
     },
 
+    /**
+     *
+     * @returns {*|Number|number}
+     */
     getLatitude: function(){
         return this._latitude;
     },
 
+    /**
+     *
+     * @param lat
+     */
     setLatitude: function(lat){
         this._latitude = parseFloat(lat);
     },
 
+    /**
+     *
+     * @returns {*|Number|number}
+     */
     getLongitude: function(){
         return this._longitude;
     },
 
+    /**
+     *
+     * @param lng
+     */
     setLongitude: function(lng){
         this._longitude = parseFloat(lng);
         if(this._popup)
             this._popup.setLatLng(L.latLng(this.getLatitude(),this.getLongitude()));
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getCog: function(){
         return this._cog;
     },
 
+    /**
+     *
+     * @returns {number}
+     */
     getCogDeg: function(){
         return Math.round(this.getCog() * (180/Math.PI));
     },
 
+    /**
+     *
+     * @param cog
+     */
     setCog: function(cog){
         this._cog = cog;
         this.setCourse(cog)
     },
 
+    /**
+     *
+     * @returns {AISDecoder._transformation.trueHeading|{UNDEFINED, degToMsg, msgToDeg, msgToRad}|*|number}
+     */
     getTrueHeading: function(){
         return this._trueHeading;
     },
 
+    /**
+     *
+     * @returns {number}
+     */
     getTrueHeadingDeg: function(){
         return Math.round(this.getTrueHeading() * (180/Math.PI));
     },
 
+    /**
+     *
+     * @param trueHeading
+     */
     setTrueHeading: function(trueHeading){
         this._trueHeading = trueHeading;
         this.setHeading(trueHeading);
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getTimeStamp: function(){
         return this._timeStamp;
     },
 
+    /**
+     *
+     * @param timeStamp
+     */
     setTimeStamp: function(timeStamp){
         this._timeStamp = timeStamp;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getSpecialManoeuvreIndicator: function(){
         return this._specialManoeuvreIndicator;
     },
 
+    /**
+     *
+     * @param specialManoeuvreIndicator
+     */
     setSpecialManoeuvreIndicator: function(specialManoeuvreIndicator){
         this._specialManoeuvreIndicator = specialManoeuvreIndicator;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getRaimFlag: function(){
         return this._raimFlag;
     },
 
+    /**
+     *
+     * @param raimFlag
+     */
     setRaimFlag: function(raimFlag){
         this._raimFlag = raimFlag;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getCommunicationState: function(){
         return this._communicationState;
     },
 
+    /**
+     *
+     * @param communicationState
+     */
     setCommunicationState: function(communicationState){
         this._communicationState = communicationState;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getReferencePositions: function(){
         return (this.getReferencePositionA() && this.getReferencePositionB() && this.getReferencePositionC() && this.getReferencePositionD()) ? [this.getReferencePositionA(),this.getReferencePositionB() ,this.getReferencePositionC() , this.getReferencePositionD()] : false;
     },
 
+    /**
+     *
+     * @returns {*|number}
+     */
     getReferencePositionA: function(){
         return this._referencePositionA;
     },
 
+    /**
+     *
+     * @param referencePositionA
+     */
     setReferencePositionA: function(referencePositionA){
         this._referencePositionA = referencePositionA;
     },
 
+    /**
+     *
+     * @returns {*|number}
+     */
     getReferencePositionB: function(){
         return this._referencePositionB;
     },
 
+    /**
+     *
+     * @param referencePositionB
+     */
     setReferencePositionB: function(referencePositionB){
         this._referencePositionB = referencePositionB;
     },
 
+    /**
+     *
+     * @returns {*|number}
+     */
     getReferencePositionC: function(){
         return this._referencePositionC;
     },
 
+    /**
+     *
+     * @param referencePositionC
+     */
     setReferencePositionC: function(referencePositionC){
         this._referencePositionC = referencePositionC;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getReferencePositionD: function(){
         return this._referencePositionD;
     },
 
+    /**
+     *
+     * @param referencePositionD
+     */
     setReferencePositionD: function(referencePositionD){
         this._referencePositionD = referencePositionD;
     },
@@ -908,10 +1289,18 @@ L.AISTrack = L.TrackSymbol.extend({
         return this._referencePositionA + this._referencePositionB;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getShipWidth: function(){
         return this._referencePositionC + this._referencePositionD;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getTypeOfShipText: function(){
         switch (this.getTypeOfShipAndCargo()){
             case 0:
@@ -1119,10 +1508,17 @@ L.AISTrack = L.TrackSymbol.extend({
         }
     },   
 
+    /**
+     *
+     * @returns {Date}
+     */
     getLastUpdate: function(){
         return this._lastUpdate;
     },
 
+    /**
+     *
+     */
     setLastUpdate: function(){
         this._lastUpdate = new Date();
     },
@@ -1198,6 +1594,11 @@ L.AISTrack = L.TrackSymbol.extend({
 
 });
 
+/**
+ *
+ * @param options
+ * @returns {*}
+ */
 L.aisTrack = function (options) {
     return new L.AISTrack(options);
 };
