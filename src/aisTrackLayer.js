@@ -2,14 +2,23 @@
  * Created by Johannes Rudolph <johannes.rudolph@gmx.com> on 16.02.2016.
  */
 
-L.AISTrackLayer = L.FeatureGroup.extend({
+L.AISTrackLayer = L.LayerGroup.extend({
 
+    /**
+     *
+     * @param layers
+     */
     initialize: function(layers){
         L.LayerGroup.prototype.initialize.call(this, layers);
         this._intervalDeadObjs = setInterval(this._checkDeadObjects,1000,this);
         this.setRemoveTime(10);      
     },
 
+    /**
+     *
+     * @param mmsi
+     * @param data
+     */
     addAisData: function(mmsi,data){
         var trackMarker;
         if(this.getLayer(mmsi)){
@@ -31,6 +40,11 @@ L.AISTrackLayer = L.FeatureGroup.extend({
         }
     },
 
+    /**
+     *
+     * @param layerGroup
+     * @private
+     */
     _checkDeadObjects: function(layerGroup) {
         var now = new Date();
         layerGroup.eachLayer(function(layer){
@@ -60,10 +74,18 @@ L.AISTrackLayer = L.FeatureGroup.extend({
         return false;
     },
 
+    /**
+     *
+     * @param minutes
+     */
     setRemoveTime: function(minutes){
         this._removeMinutes = minutes;
     },
 
+    /**
+     *
+     * @returns {*}
+     */
     getRemoveTime: function(){
         return this._removeMinutes;
     }
