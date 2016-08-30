@@ -1101,6 +1101,13 @@ L.AISTrack = L.TrackSymbol.extend({
 
     /**
      *
+     */
+    getLatLng: function(){
+        return L.latLng(this.getLatitude(),this.getLongitude())
+    },
+
+    /**
+     *
      * @returns {*}
      */
     getCog: function(){
