@@ -39,6 +39,27 @@ L.AISTrackLayer = L.FeatureGroup.extend({
         });
     },
 
+    /**
+     *
+     * @param searchText
+     * @returns {*}
+     */
+    searchTrack: function (searchText) {
+        for(var i = 0 ; i < this.getLayers().length; i++){
+            var obj = this.getLayers()[i];
+            if(obj.getMmsi() === parseInt(searchText)){
+                return obj;
+            }
+            if(obj.getName().toLowerCase() === searchText.toLowerCase()){
+                return obj;
+            }
+            if(obj.getImoNumber() === parseInt(searchText)){
+                return obj;
+            }
+        }
+        return false;
+    },
+
     setRemoveTime: function(minutes){
         this._removeMinutes = minutes;
     },
