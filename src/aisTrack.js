@@ -131,7 +131,7 @@ L.AISTrack = L.TrackSymbol.extend({
      * @private
      */
     _labelAndPopupUpdate: function (){
-        this.updateLabelContent(this.getMmsi() + " " + this.getName());                
+        this.updateLabelContent(this.getMmsi() + " " + this.getName());
         if(this._popup){
             this._popup.setContent(this._getPopupContent());
             //this._popup.update();
