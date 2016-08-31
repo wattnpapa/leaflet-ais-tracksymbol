@@ -1129,7 +1129,7 @@ L.AISTrack = L.TrackSymbol.extend({
      */
     setCog: function(cog){
         this._cog = cog;
-        this.setCourse(cog)
+        this.setCourse(cog);
     },
 
     /**
@@ -1446,6 +1446,7 @@ L.AISTrack = L.TrackSymbol.extend({
             case 97:
             case 98:
             case 99:
+                return "Other";
             default:
                 return "Other";
         }
@@ -1472,7 +1473,7 @@ L.AISTrack = L.TrackSymbol.extend({
      * @param color {String} The color string.
      */
     setColor: function(color) {
-        this.setStyle({color: color})
+        this.setStyle({color: color});
         return this.redraw();
     },
 
@@ -1482,7 +1483,7 @@ L.AISTrack = L.TrackSymbol.extend({
      * @param fillOpacity {Number} The fill opacity.
      */
     setFillOpacity: function(fillOpacity) {
-        this.setStyle({fillOpacity: fillOpacity})
+        this.setStyle({fillOpacity: fillOpacity});
         return this.redraw();
     },
 
@@ -1492,7 +1493,7 @@ L.AISTrack = L.TrackSymbol.extend({
      * @param opacity {Number} The opacity.
      */
     setOpacity: function(opacity) {
-        this.setStyle({opacity: opacity})
+        this.setStyle({opacity: opacity});
         return this.redraw();
     },
 
@@ -1502,7 +1503,7 @@ L.AISTrack = L.TrackSymbol.extend({
      * @param weight {Number} The weight .
      */
     setWeight: function(weight) {
-        this.setStyle({weight: weight})
+        this.setStyle({weight: weight});
         return this.redraw();
     },
 
@@ -1512,7 +1513,7 @@ L.AISTrack = L.TrackSymbol.extend({
      * @param fill {Boolean} The fill.
      */
     setFill: function(fill) {
-        this.setStyle({fill: fill})
+        this.setStyle({fill: fill});
         return this.redraw();
     },
 
@@ -1522,7 +1523,7 @@ L.AISTrack = L.TrackSymbol.extend({
      * @param stroke {Boolean} The stroke.
      */
     setStroke: function(stroke) {
-        this.setStyle({stroke: stroke})
+        this.setStyle({stroke: stroke});
         return this.redraw();
     },
 
@@ -1532,7 +1533,7 @@ L.AISTrack = L.TrackSymbol.extend({
      * @param color {String} The color string.
      */
     setFillColor: function(color) {
-        this.setStyle({fillColor: color})
+        this.setStyle({fillColor: color});
     }
 
 });
