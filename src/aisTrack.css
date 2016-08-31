@@ -11,7 +11,7 @@
     margin: 0;
 }
 
-.ais-track-popup > a.leaflet-popup-close-button{
+.ais-track-popup > .leaflet-popup-close-button{
     padding: 10px 25px 0 0
 }
 
