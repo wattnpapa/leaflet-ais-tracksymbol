@@ -1,4 +1,0 @@
-MMSI = {
-    "123456": "CUSTOM MMSI NAME 1",
-    "789101": "CUSTOM MMSI NAME 2"
-}
