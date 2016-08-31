@@ -70,6 +70,7 @@ L.AISTrack = L.TrackSymbol.extend({
 
         this.bindLabel();
         this.bindPopup("",{className: "ais-track-popup"});
+        this.bindTracksymbolLabel();
 
     },
 
@@ -146,7 +147,6 @@ L.AISTrack = L.TrackSymbol.extend({
     _getPopupContent: function() {
         var headerText = this.getName().length !== 0  ? this.getName() : "MSSI: " + this.getMmsi();
 
-
         var content = "<div class='ais-popup-header'>"+headerText+"</div>" +
             "<div class='ais-popup-content'>" +
             "<table>";          
@@ -187,7 +187,7 @@ L.AISTrack = L.TrackSymbol.extend({
         content += this._getTableRow("Last AIS Msg",this.getLastUpdate());
         //content += "<tr><td colspan='2'><img src='getShipImage.php?mmsi="+this.getMmsi()+"' width='250'/></td>";
         content += "</table></div>";
-        content += "<div class='ais-popup-footer'>More Details on <a href='http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi()+"' target='_blank'>MarineTraffic.com</a></div>"
+        content += "<div class='ais-popup-footer'>More Details on <a href='http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi()+"' target='_blank'>MarineTraffic.com</a></div>";
         return content;
     },
 
@@ -1097,13 +1097,14 @@ L.AISTrack = L.TrackSymbol.extend({
         this._longitude = parseFloat(lng);
         if(this._popup)
             this._popup.setLatLng(L.latLng(this.getLatitude(),this.getLongitude()));
+        this.updateTracksymolLabelLatLng(L.latLng(this.getLatitude(),this.getLongitude()));
     },
 
     /**
      *
      */
     getLatLng: function(){
-        return L.latLng(this.getLatitude(),this.getLongitude())
+        return L.latLng(this.getLatitude(),this.getLongitude());
     },
 
     /**
