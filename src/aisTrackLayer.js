@@ -2,6 +2,9 @@
  * Created by Johannes Rudolph <johannes.rudolph@gmx.com> on 16.02.2016.
  */
 
+/**
+ *
+ */
 L.AISTrackLayer = L.LayerGroup.extend({
 
     /**
@@ -29,15 +32,36 @@ L.AISTrackLayer = L.LayerGroup.extend({
             trackMarker = L.aisTrack( {
                 contextmenu: true,
                 contextmenuItems: [{
-                    text: 'CPA Calculation',
+                    text: 'Details',
+                    callback: this.showDetails,
                     index: 0
                 }, {
-                    separator: true,
+                    text: 'MarineTraffic.com',
+                    callback: this.openMarineTraffic,
                     index: 1
+                },{
+                    separator: true,
+                    index: 2
                 }]});
             trackMarker.addData(data);
             this.addLayer(trackMarker);
         }
+    },
+
+    /**
+     *
+     * @param e
+     */
+    openMarineTraffic: function (e) {
+        e.relatedTarget.openMarineTraffic();
+    },
+
+    /**
+     *
+     * @param e
+     */
+    showDetails: function (e) {
+        e.relatedTarget.openPopup();
     },
 
     /**
@@ -91,6 +115,10 @@ L.AISTrackLayer = L.LayerGroup.extend({
     }
 });
 
+/**
+ *
+ * @returns {*}
+ */
 L.aisTrackLayer = function() {
     return new L.AISTrackLayer();
 };
