@@ -192,6 +192,14 @@ L.AISTrack = L.TrackSymbol.extend({
     },
 
     /**
+     * Open Ship Detials from MarineTraffic in a new Tab/Window
+     */
+    openMarineTraffic: function () {
+        var win = window.open("http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi(), '_blank');
+        win.focus();
+    },
+
+    /**
      *
      * @param title
      * @param content
