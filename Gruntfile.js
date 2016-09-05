@@ -14,7 +14,7 @@ module.exports = function (grunt) {
         },
 
         jshint: {
-            all: ['dist/<%= pkg.name %>.js']
+            all: ['src/*.js','src/label/*.js']
         },
 
         cssmin:{
