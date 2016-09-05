@@ -5,7 +5,7 @@
 /**
  *
  */
-L.AISTrackLayer = L.LayerGroup.extend({
+L.AISTrackSymbolLayer = L.LayerGroup.extend({
 
     /**
      *
@@ -22,14 +22,15 @@ L.AISTrackLayer = L.LayerGroup.extend({
      * @param mmsi
      * @param data
      */
-    addAisData: function(mmsi,data){
+    addAisData: function(data){
+        var mmsi = data.mmsi;
         var trackMarker;
         if(this.getLayer(mmsi)){
             trackMarker = this.getLayer(mmsi);
             trackMarker.addData(data);
         }
         else{
-            trackMarker = L.aisTrack( {
+            trackMarker = L.aisTrackSymbol( {
                 contextmenu: true,
                 contextmenuItems: [{
                     text: 'Details',
@@ -119,6 +120,6 @@ L.AISTrackLayer = L.LayerGroup.extend({
  *
  * @returns {*}
  */
-L.aisTrackLayer = function() {
-    return new L.AISTrackLayer();
+L.aisTrackSymbolLayer = function() {
+    return new L.AISTrackSymbolLayer();
 };

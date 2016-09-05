@@ -5,7 +5,7 @@
 /**
  *
  */
-L.AISTrack = L.TrackSymbol.extend({
+L.AISTrackSymbol = L.TrackSymbol.extend({
 
     /**
      *
@@ -1551,7 +1551,7 @@ L.AISTrack = L.TrackSymbol.extend({
  * @param options
  * @returns {*}
  */
-L.aisTrack = function (options) {
-    return new L.AISTrack(options);
+L.aisTrackSymbol = function (options) {
+    return new L.AISTrackSymbol(options);
 };
 
