@@ -5,7 +5,7 @@
 /**
  *
  */
-L.AISTrack = L.TrackSymbol.extend({
+L.AISTrackSymbol = L.TrackSymbol.extend({
 
     /**
      *
@@ -189,6 +189,14 @@ L.AISTrack = L.TrackSymbol.extend({
         content += "</table></div>";
         content += "<div class='ais-popup-footer'>More Details on <a href='http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi()+"' target='_blank'>MarineTraffic.com</a></div>";
         return content;
+    },
+
+    /**
+     * Open Ship Detials from MarineTraffic in a new Tab/Window
+     */
+    openMarineTraffic: function () {
+        var win = window.open("http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi(), '_blank');
+        win.focus();
     },
 
     /**
@@ -1560,8 +1568,8 @@ L.AISTrack = L.TrackSymbol.extend({
  * @param options
  * @returns {*}
  */
-L.aisTrack = function (options) {
-    return new L.AISTrack(options);
+L.aisTrackSymbol = function (options) {
+    return new L.AISTrackSymbol(options);
 };
 
 
@@ -1569,7 +1577,10 @@ L.aisTrack = function (options) {
  * Created by Johannes Rudolph <johannes.rudolph@gmx.com> on 16.02.2016.
  */
 
-L.AISTrackLayer = L.LayerGroup.extend({
+/**
+ *
+ */
+L.AISTrackSymbolLayer = L.LayerGroup.extend({
 
     /**
      *
@@ -1586,25 +1597,47 @@ L.AISTrackLayer = L.LayerGroup.extend({
      * @param mmsi
      * @param data
      */
-    addAisData: function(mmsi,data){
+    addAisData: function(data){
+        var mmsi = data.mmsi;
         var trackMarker;
         if(this.getLayer(mmsi)){
             trackMarker = this.getLayer(mmsi);
             trackMarker.addData(data);
         }
         else{
-            trackMarker = L.aisTrack( {
+            trackMarker = L.aisTrackSymbol( {
                 contextmenu: true,
                 contextmenuItems: [{
-                    text: 'CPA Calculation',
+                    text: 'Details',
+                    callback: this.showDetails,
                     index: 0
                 }, {
-                    separator: true,
+                    text: 'MarineTraffic.com',
+                    callback: this.openMarineTraffic,
                     index: 1
+                },{
+                    separator: true,
+                    index: 2
                 }]});
             trackMarker.addData(data);
             this.addLayer(trackMarker);
         }
+    },
+
+    /**
+     *
+     * @param e
+     */
+    openMarineTraffic: function (e) {
+        e.relatedTarget.openMarineTraffic();
+    },
+
+    /**
+     *
+     * @param e
+     */
+    showDetails: function (e) {
+        e.relatedTarget.openPopup();
     },
 
     /**
@@ -1658,8 +1691,12 @@ L.AISTrackLayer = L.LayerGroup.extend({
     }
 });
 
-L.aisTrackLayer = function() {
-    return new L.AISTrackLayer();
+/**
+ *
+ * @returns {*}
+ */
+L.aisTrackSymbolLayer = function() {
+    return new L.AISTrackSymbolLayer();
 };
 /**
  *
