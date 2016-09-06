@@ -15,7 +15,6 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         L.TrackSymbol.prototype.initialize.call(this,L.latLng(0.0,0.0) , options);
         options = options || {};
 
-        //this.setTrackId(options.trackId || this._mmsi);
         this.setFill(options.fill || true);
         this.setFillColor(options.fillColor || '#d3d3d3');
         this.setFillOpacity(options.fillOpacity || 1.0);
@@ -26,52 +25,13 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         this._leaderTime = 300;
         options.course = options.cog || 0;
 
-        this.setMmsi(options.mssi || 0);
-        this._aisVersionIndicator = options.aisVersionIndicator || 0;
-        this._imoNumber = options.imoNumber || 0;
-        this._callSign = options.callSign || "";
-        this._name = options.name || "";
-        this._typeOfShipAndCargo = options.typeOfShipAndCargo || 99;
-        this._etaMonth = options.etaMonth || 0;
-        this._etaDay = options.etaDay || 0;
-        this._etaHour = options.etaHour || 0;
-        this._etaMinute = options.etaMinute || 0;
-        this._maxPresentStaticDraught = options.maxPresentStaticDraught || 0;
-        this._destination = options.destination || "";
-        this._dte = options.dte || 0;
-        this._navigationStatus = options.navigationStatus || 0;
-        this._rot = options.rot || 0;
-        this._sog = options.sog || 0;
-        this._positionAccuracy = options.positionAccuracy || 0;
-        this._latitude = options.latitude || 0.0;
-        this._longitude = options.longitude || 0.0;
-        this._cog = options.cog || 0;
-        this._trueHeading = options.trueHeading || 0;
-        this._timeStamp = options.timeStamp || 0;
-        this._specialManoeuvreIndicator = options.specialManoeuvreIndicator || 0;
-        this._raimFlag = options.raimFlag || 0;
-        this._communicationState = options.communicationState || 0;
-        this._referencePositionA = options.referencePositionA || 0;
-        this._referencePositionB = options.referencePositionB || 0;
-        this._referencePositionC = options.referencePositionC || 0;
-        this._referencePositionD = options.referencePositionD || 0;
-        this._typeOfDevice = options.typeOfDevice || 0;
-        this._typeOfAtoN = options.typeOfAtoN || 0;
-        this._nameOfAtoN = options.nameOfAtoN || "";
-        this._utcYear = options.utcYear || 0;
-        this._utcMonth = options.utcMonth || 0;
-        this._utcDay = options.utcDay || 0;
-        this._utcHour = options.utcHour || 24;
-        this._utcMinute = options.utcMinute || 60;
-        this._utcSecond = options.utcSecond || 60;
-        this._virtualAtoNFlag = options.virtualAtoNFlag || 0;
-        this._assignedModeFlag = options.assignedModeFlag || 0;
-        this.setLastUpdate();
+        this.setName(options.name || "");
 
         this.bindLabel();
         this.bindPopup("",{className: "ais-track-popup"});
         this.bindTracksymbolLabel();
 
+        this.addData(options);
     },
 
     /**
@@ -124,18 +84,17 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         if(aisData.utcSecond) this.setUTCSecond(aisData.utcSecond);
         this._setNameByMMSITable();
         this.setLastUpdate();
-        this._labelAndPopupUpdate();
+        this.labelAndPopupUpdate();
     },
 
     /**
      *
      * @private
      */
-    _labelAndPopupUpdate: function (){
+    labelAndPopupUpdate: function (){
         this.updateLabelContent(this.getMmsi() + " " + this.getName());
-        if(this._popup){
-            this._popup.setContent(this._getPopupContent());
-            //this._popup.update();
+        if(this.getPopup()){
+            this.getPopup().setContent(this.getPopupContent());
         }
     },
 
@@ -144,51 +103,58 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {string}
      * @private
      */
-    _getPopupContent: function() {
-        var headerText = this.getName().length !== 0  ? this.getName() : "MSSI: " + this.getMmsi();
+    getPopupContent: function() {
 
-        var content = "<div class='ais-popup-header'>"+headerText+"</div>" +
-            "<div class='ais-popup-content'>" +
-            "<table>";          
-        content += this._getTableRow("MSSI",this.getMmsi());
-        
-        if (this.getMsgId() == 1 || this.getMsgId() == 2 || this.getMsgId() == 3 || this.getMsgId() == 5)
-        {
-            content += this._getTableRow("Name",this.getName());
-            content += this._getTableRow("IMO",this.getImoNumber());
-            content += this._getTableRow("Callsign",this.getCallSign());
-            content += this._getTableRow("Speed",this.getSog()," kn" + " | " + this.getSogKmH() + " km/h ");
-            content += this._getTableRow("Course",this.getCogDeg(),"&deg;");
-            content += this._getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
-            content += this._getTableRow("Destination",this.getDestination());
-            content += this._getTableRow("ETA",this.getEta());
-            content += this._getTableRow("Nav. Status",this.getNavigationStatusText());
-            content += this._getTableRow("Length",this.getShipLength()," m");
-            content += this._getTableRow("Width",this.getShipWidth()," m");
-            content += this._getTableRow("TypeOfShip",this.getTypeOfShipText());
-            content += this._getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
-        }
-        if(this.getMsgId() == 4)
-        {
-            content += this._getTableRow("Name",this.getName());
-            content += this._getTableRow("TypeOfDevice",this.getTypeOfDeviceText());
-            content += this._getTableRow("Time",this.getUTCTime());
-        }
-        if(this.getMsgId() == 21)
-        {            
-            content += this._getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
-            content += this._getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
-            content += this._getTableRow("AssignedMode",this.getAssignedModeFlagText());
-            content += this._getTableRow("RefA",this.getReferencePositionA());
-            content += this._getTableRow("RefB",this.getReferencePositionB());
-            content += this._getTableRow("RefC",this.getReferencePositionC());
-            content += this._getTableRow("RefD",this.getReferencePositionD());
-        }
-        content += this._getTableRow("Last AIS Msg",this.getLastUpdate());
-        //content += "<tr><td colspan='2'><img src='getShipImage.php?mmsi="+this.getMmsi()+"' width='250'/></td>";
-        content += "</table></div>";
-        content += "<div class='ais-popup-footer'>More Details on <a href='http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi()+"' target='_blank'>MarineTraffic.com</a></div>";
+        var content = L.DomUtil.create('div');
+
+        var headerText = this.getName().length !== 0  ? this.getName() : "MSSI: " + this.getMmsi();
+        var header = L.DomUtil.create('div','ais-popup-header',content);
+        header.innerHTML = headerText;
+
+        var popupContent = L.DomUtil.create('div','ais-popup-content',content);
+
+        var table = "<table>";
+        table += this._getTableRow("MSSI",this.getMmsi());
+
+        if(this.getName())                      table += this._getTableRow("Name",this.getName());
+        if(this.getImoNumber())                 table += this._getTableRow("IMO",this.getImoNumber());
+        if(this.getCallSign())                  table += this._getTableRow("Callsign",this.getCallSign());
+        if(this.getSog())                       table += this._getTableRow("Speed",this.getSog()," kn" + " | " + this.getSogKmH() + " km/h ");
+        if(this.getCogDeg())                    table += this._getTableRow("Course",this.getCogDeg(),"&deg;");
+        if(this.getTrueHeadingDeg())            table += this._getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
+        if(this.getDestination())               table += this._getTableRow("Destination",this.getDestination());
+        if(this.getEta())                       table += this._getTableRow("ETA",this.getEta());
+        if(this.getNavigationStatusText())      table += this._getTableRow("Nav. Status",this.getNavigationStatusText());
+        if(this.getShipLength())                table += this._getTableRow("Length",this.getShipLength()," m");
+        if(this.getShipWidth())                 table += this._getTableRow("Width",this.getShipWidth()," m");
+        if(this.getTypeOfShipText())            table += this._getTableRow("TypeOfShip",this.getTypeOfShipText());
+        if(this.getMaxPresentStaticDraught())   table += this._getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
+
+        if(this.getTypeOfDeviceText())          table += this._getTableRow("TypeOfDevice",this.getTypeOfDeviceText());
+        if(this.getUTCTime())                   table += this._getTableRow("Time",this.getUTCTime());
+
+        if(this.getTypeOfAtoNText())            table += this._getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
+        if(this.getVirtualAtoNFlagText())       table += this._getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
+        if(this.getAssignedModeFlagText())      table += this._getTableRow("AssignedMode",this.getAssignedModeFlagText());
+        if(this.getReferencePositionA())        table += this._getTableRow("RefA",this.getReferencePositionA());
+        if(this.getReferencePositionB())        table += this._getTableRow("RefB",this.getReferencePositionB());
+        if(this.getReferencePositionC())        table += this._getTableRow("RefC",this.getReferencePositionC());
+        if(this.getReferencePositionD())        table += this._getTableRow("RefD",this.getReferencePositionD());
+
+        table += this._getTableRow("Last AIS Messsage",this.getLastUpdate());
+
+        table += "</table>";
+
+        popupContent.innerHTML = table;
+
+        var footer = L.DomUtil.create('div','ais-popup-footer',content);
+        footer.innerHTML = "More Details on <a href='http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi()+"' target='_blank'>MarineTraffic.com</a>";
+
         return content;
+    },
+
+    getPopup: function () {
+        return this._popup;
     },
 
     /**
