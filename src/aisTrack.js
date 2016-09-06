@@ -183,7 +183,24 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
                 "</tr>";
         return "";
     },
-    
+
+    /**
+     *
+     * @private
+     */
+    _setColorByTypeOfDevice: function(){
+        this.setColor("#61380b");
+        this.setFillColor("#ffffff");
+    },
+
+    /**
+     *
+     * @private
+     */
+    _setColorByTypeOfAtoN: function(){
+        this.setColor("#61380b");
+        this.setFillColor("#CEF6CE");
+    },
 
     /**
      *
@@ -538,7 +555,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {*}
      */
     getTypeOfAtoNText: function(){
-        //this._setColorByTypeOfAtoN();
+        this._setColorByTypeOfAtoN();
         switch (this.getTypeOfAtoN()){
             case 0:
                 return "Default, Type of AtoN not specified";
@@ -821,7 +838,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {*}
      */
     getTypeOfDeviceText: function(){
-        //this._setColorByTypeOfDevice();
+        this._setColorByTypeOfDevice();
         switch (this.getTypeOfDevice()){
             case 0:
                 return "undefined (default)";
