@@ -818,7 +818,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {string}
      */
     getUTCTime: function(){
-        if (typeof getUTCYear() !== 'undefined')
+        if (typeof this.getUTCYear() !== 'undefined')
             return null;
         return this.getUTCYear() + "." + this.getUTCMonth() + "." + this.getUTCDay() + " " + this.getUTCHour() + ":" + this.getUTCMinute() + ":" + this.getUTCSecond() + " UTC";
     },
