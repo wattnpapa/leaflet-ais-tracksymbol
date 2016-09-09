@@ -136,10 +136,6 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         if(this.getTypeOfAtoNText())            table += this._getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
         if(this.getVirtualAtoNFlagText())       table += this._getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
         if(this.getAssignedModeFlagText())      table += this._getTableRow("AssignedMode",this.getAssignedModeFlagText());
-        if(this.getReferencePositionA())        table += this._getTableRow("RefA",this.getReferencePositionA());
-        if(this.getReferencePositionB())        table += this._getTableRow("RefB",this.getReferencePositionB());
-        if(this.getReferencePositionC())        table += this._getTableRow("RefC",this.getReferencePositionC());
-        if(this.getReferencePositionD())        table += this._getTableRow("RefD",this.getReferencePositionD());
 
         table += this._getTableRow("Last AIS Messsage",this.getLastUpdate());
 
