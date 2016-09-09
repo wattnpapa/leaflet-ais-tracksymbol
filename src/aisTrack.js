@@ -818,7 +818,9 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {string}
      */
     getUTCTime: function(){
-       return this.getUTCYear() + "." + this.getUTCMonth() + "." + this.getUTCDay() + " " + this.getUTCHour() + ":" + this.getUTCMinute() + ":" + this.getUTCSecond() + " UTC";
+        if (typeof getUTCYear() !== 'undefined')
+            return null;
+        return this.getUTCYear() + "." + this.getUTCMonth() + "." + this.getUTCDay() + " " + this.getUTCHour() + ":" + this.getUTCMinute() + ":" + this.getUTCSecond() + " UTC";
     },
 
     /**
@@ -834,7 +836,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {*}
      */
     getTypeOfDeviceText: function(){
-        this._setColorByTypeOfDevice();
+        //this._setColorByTypeOfDevice();
         switch (this.getTypeOfDevice()){
             case 0:
                 return "undefined (default)";
