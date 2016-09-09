@@ -551,7 +551,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {*}
      */
     getTypeOfAtoNText: function(){
-        this._setColorByTypeOfAtoN();
+        //this._setColorByTypeOfAtoN();
         switch (this.getTypeOfAtoN()){
             case 0:
                 return "Default, Type of AtoN not specified";
@@ -818,7 +818,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {string}
      */
     getUTCTime: function(){
-        if (typeof this.getUTCYear() !== 'undefined')
+        if (typeof this.getUTCYear() === 'undefined')
             return null;
         return this.getUTCYear() + "." + this.getUTCMonth() + "." + this.getUTCDay() + " " + this.getUTCHour() + ":" + this.getUTCMinute() + ":" + this.getUTCSecond() + " UTC";
     },
