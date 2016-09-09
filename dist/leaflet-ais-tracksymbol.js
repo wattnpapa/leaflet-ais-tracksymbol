@@ -1,3 +1,380 @@
+L.TrackLayer = function() {
+  var aislayer = L.featureGroup([]);
+
+  this.addTrack = function(marker) {
+    marker.addTo(aislayer);
+  };
+
+  this.removeTrack = function(marker) {
+    marker.removeLayer(aislayer);
+  };
+
+
+  this.addTo = function(map) {
+    aislayer.addTo(map);
+  };
+};
+
+L.trackLayer = function() {
+  return new L.TrackLayer();
+};
+
+
+/**
+ * Tracksymbol for leaflet.
+ * The visualization is chosen by zoomlevel or heading availability.
+ * If zoomlevel is smaller than 'minSilouetteZoom' a triangular symbol is rendered.
+ * If zoomlevel is greater than 'minSilouetteZoom' a ship silouette is rendered.
+ * If heading is undefined a diamond symbol is rendered.
+ * The following options are available:
+ * <ul>
+ *   <li>trackId: The unique id of the symbol (default: 0). </li>
+ *   <li>size: Static size of the symbol in pixels (default:24). </li>
+ *   <li>heading: Initial heading of the symbol (default: undefined). </li>
+ *   <li>course: Initial course of the symbol (default: undefined). </li>
+ *   <li>speed: Initial speed of the symbol-leader (default: undefined). </li>
+ *   <li>leaderTime: The length of the leader (speed * leaderTime) (default:60s). </li>
+ *   <li>minSilouetteZoom: The zoomlevel to switch from triangle to silouette (default:14). </li>
+ *   <li>gpsRefPos: Initial GPS offset of the symbol (default: undefined). </li>
+ *   <li>defaultSymbol: The triangular track symbol. Contains an array of n numbers. [x1,y1,x2,y2,...] </li>
+ *   <li>noHeadingSymbol: The diamond track symbol. Contains an array of n numbers. [x1,y1,x2,y2,...] </li>
+ *   <li>silouetteSymbol: The ship track symbol. Contains an array of n numbers. [x1,y1,x2,y2,...] </li>
+ * </ul>
+ * @class TrackSymbol
+ * @constructor
+ * @param latlng {LanLng} The initial position of the symbol.
+ * @param options {Object} The initial options described above.
+ */
+L.TrackSymbol = L.Path.extend({
+
+  initialize: function (latlng, options) {
+    L.Path.prototype.initialize.call(this, options);
+    if(latlng === undefined) {
+      throw Error('Please give a valid lat/lon-position');
+    }
+    options = options || {};
+    this._id = options.trackId || 0;
+    this._leaflet_id = this._id; 
+    this._latlng = L.latLng(latlng);
+    this._size = options.size || 24;
+    this._heading = options.heading;
+    this._course = options.course;
+    this._speed = options.speed;
+    this._leaderTime = options.leaderTime || 60.0;
+    this._minSilouetteZoom = options.minSilouetteZoom || 14;
+    this.setGPSRefPos(options.gpsRefPos);
+    this._triSymbol = options.defaultSymbol || [0.75,0, -0.25,0.3, -0.25,-0.3];
+    this._diaSymbol = options.noHeadingSymbol || [0.3,0, 0,0.3, -0.3,0, 0,-0.3];
+    this._silSymbol = options.silouetteSymbol || [1,0.5, 0.75,1, 0,1, 0,0, 0.75,0];
+  },
+
+  /**
+   * Set latitude/longitude on the symbol.
+   * @method setLatLng
+   * @param latlng {LatLng} Position of the symbol on the map. 
+   */
+  setLatLng: function (latlng) {
+    this._latlng = L.latLng(latlng);
+    return this.redraw();
+  },
+  
+  /**
+   * Set the speed shown in the symbol [m/s].
+   * The leader-length is calculated via leaderTime.
+   * @method setSpeed
+   * @param speed {Number} The speed in [m/s]. 
+   */
+  setSpeed: function( speed ) {
+    this._speed = speed;
+    return this.redraw();
+  },
+  
+  /**
+   * Sets the course over ground [rad].
+   * The speed-leader points in this direction.
+   * @method setCourse
+   * @param course {Number} The course in radians.
+   */
+  setCourse: function( course ) {
+    this._course = course;
+    return this.redraw();
+  },
+  
+  /**
+   * Sets the heading of the symbol [rad].
+   * The heading rotates the symbol.
+   * @method setHeading
+   * @param course {Number} The heading in radians.
+   */
+  setHeading: function( heading ) {
+    this._heading = heading;
+    return this.redraw();
+  },
+  
+  /**
+   * Sets the leaderTime of the symbol [seconds].
+   * @method setLeaderTime
+   * @param leaderTime {Number} The leaderTime in seconds.
+   */
+  setLeaderTime: function( leaderTime ) {
+    this._leaderTime = leaderTime;
+    return this.redraw();
+  },
+
+  /**
+   * Sets the position offset of the silouette to the center of the symbol.
+   * The array contains the refpoints from ITU R-REC-M.1371-4-201004 page 108
+   * in sequence A,B,C,D.
+   * @method setGPSRefPos
+   * @param gpsRefPos {Array} The GPS offset from center.
+   */
+  setGPSRefPos: function(gpsRefPos) {
+    if(gpsRefPos === undefined || 
+       gpsRefPos.length < 4) {
+      this._gpsRefPos = undefined;
+    }
+    else if(gpsRefPos[0] === 0 && 
+            gpsRefPos[1] === 0 && 
+            gpsRefPos[2] === 0 && 
+            gpsRefPos[3] === 0) {
+      this._gpsRefPos = undefined;
+    }
+    else {
+      this._gpsRefPos = gpsRefPos;
+    }
+    return this.redraw();
+  },
+
+  /**
+   * Returns the trackId.
+   * @method getTrackId
+   * @return {Number} The track id.
+   */
+  getTrackId: function() {
+    return this._trackId;
+  },
+    
+  _getLatSize: function () {
+    return this._getLatSizeOf(this._size);
+  },
+
+  _getLngSize: function () {
+    return this._getLngSizeOf(this._size);
+  },
+  
+  _getLatSizeOf: function (value) {
+    return (value / 40075017) * 360;
+  },
+
+  _getLngSizeOf: function (value) {
+    return ((value / 40075017) * 360) / Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
+  },
+
+  /**
+   * Returns the bounding box of the symbol.
+   * @method getBounds
+   * @return {LatLngBounds} The bounding box.
+   */
+  getBounds: function () {
+     var lngSize = this._getLngSize() / 2.0;
+     var latSize = this._getLatSize() / 2.0;
+     var latlng = this._latlng;
+     return new L.LatLngBounds(
+            [latlng.lat - latSize, latlng.lng - lngSize],
+            [latlng.lat + latSize, latlng.lng + lngSize]);
+  },
+
+  /**
+   * Returns the position of the symbol on the map.
+   * @mathod getLatLng
+   * @return {LatLng} The position object.
+   */
+  getLatLng: function () {
+    return this._latlng;
+  },
+
+  //
+  // Rotates the given point around the angle.
+  // @method _rotate
+  // @param point {Array} A point vector 2d.
+  // @param angle {Number} Angle for rotation [rad].
+  // @return The rotated vector 2d.
+  //
+  _rotate: function(point, angle) {
+    var x = point[0];
+    var y = point[1];
+    var si_z = Math.sin(angle);
+    var co_z = Math.cos(angle);
+    var newX = x * co_z - y * si_z;
+    var newY = x * si_z + y * co_z;
+    return [newX, newY];
+  },
+
+  //
+  // Rotates the given point-array around the angle.
+  // @method _rotateAllPoints
+  // @param points {Array} A point vector 2d.
+  // @param angle {Number} Angle for rotation [rad].
+  // @return The rotated vector-array 2d.
+  //
+  _rotateAllPoints: function(points, angle) {
+    var result = [];
+    for(var i=0;i<points.length;i+=2) {
+      var x = points[i + 0] * this._size;
+      var y = points[i + 1] * this._size;
+      var pt = this._rotate([x, y], angle);
+      result.push(pt[0]);
+      result.push(pt[1]);
+    }
+    return result;
+  },
+
+  _createLeaderViewPoints: function(angle) {
+    var result = [];
+    var leaderLength = this._speed * this._leaderTime;
+    var leaderEndLng = this._latlng.lng + this._getLngSizeOf(leaderLength * Math.cos(angle));
+    var leaderEndLat = this._latlng.lat + this._getLatSizeOf(leaderLength * Math.sin(angle));
+    var endPoint = this._map.latLngToLayerPoint(L.latLng([leaderEndLat, leaderEndLng]));
+    var startPoint = this._map.latLngToLayerPoint(this._latlng);
+    return [startPoint.x, startPoint.y, endPoint.x, endPoint.y];
+  },
+
+  _transformAllPointsToView: function(points) {
+    var result = [];
+    var symbolViewCenter = this._map.latLngToLayerPoint(this._latlng);
+    for(var i=0;i<points.length;i+=2) {
+      var x = symbolViewCenter.x + points[i+0];
+      var y = symbolViewCenter.y - points[i+1];
+      result.push(x);
+      result.push(y);
+    }
+    return result;
+  },
+
+  _createPathFromPoints: function(points) {
+    var result;
+    for(var i=0;i<points.length;i+=2) {
+      var x = points[i+0];
+      var y = points[i+1];
+      if(result === undefined)
+        result = 'M ' + x + ' ' + y + ' ';
+      else
+        result += 'L ' + x + ' ' + y + ' ';
+    }
+    return result + ' Z';
+  },
+
+  _getViewAngleFromModel:  function(modelAngle) {
+    return Math.PI/2.0 - modelAngle;
+  },
+
+  _createNoHeadingSymbolPathString: function() {
+    var viewPoints = this._transformAllPointsToView( this._rotateAllPoints(this._diaSymbol, 0.0) );
+    var viewPath = this._createPathFromPoints(viewPoints);
+    if( this._course !== undefined && this._speed !== undefined ) {
+      var courseAngle = this._getViewAngleFromModel(this._course);
+      var leaderPoints = this._createLeaderViewPoints(courseAngle);
+      viewPath += '' + this._createPathFromPoints(leaderPoints);
+    }
+    return viewPath;
+  },
+
+  _createWithHeadingSymbolPathString: function() {
+    var headingAngle = this._getViewAngleFromModel(this._heading);
+    var viewPoints = this._transformAllPointsToView( this._rotateAllPoints(this._triSymbol, headingAngle) );
+    var viewPath = this._createPathFromPoints(viewPoints);
+    if( this._course !== undefined && this._speed !== undefined ) {
+      var courseAngle = this._getViewAngleFromModel(this._course);
+      var leaderPoints = this._createLeaderViewPoints(courseAngle);
+      viewPath += '' + this._createPathFromPoints(leaderPoints);
+    }
+    return viewPath;
+  },
+
+  _resizeAndMovePoint: function(point, size, offset) {
+    return [
+      point[0] * size[0] + offset[0], 
+      point[1] * size[1] + offset[1]
+    ];
+  },
+
+  _getSizeFromGPSRefPos: function() {
+    return [
+      this._gpsRefPos[0] + this._gpsRefPos[1],
+      this._gpsRefPos[2] + this._gpsRefPos[3]
+    ];
+  },
+
+  _getOffsetFromGPSRefPos: function() {
+    return [
+      -this._gpsRefPos[1], 
+      -this._gpsRefPos[3]
+    ];
+  },
+
+  _transformSilouetteSymbol: function() {
+    var headingAngle = this._getViewAngleFromModel(this._heading);
+    var result = [];
+    var size = this._getSizeFromGPSRefPos();
+    var offset = this._getOffsetFromGPSRefPos();
+    for(var i=0;i<this._silSymbol.length;i+=2) {
+      var pt = [
+        this._silSymbol[i+0], 
+        this._silSymbol[i+1]
+      ];
+      pt = this._resizeAndMovePoint(pt, size, offset);
+      pt = this._rotate(pt, headingAngle);
+      var pointLng = this._latlng.lng + this._getLngSizeOf(pt[0]);
+      var pointLat = this._latlng.lat + this._getLatSizeOf(pt[1]);
+      var viewPoint = this._map.latLngToLayerPoint(L.latLng([pointLat, pointLng]));
+      result.push(viewPoint.x);
+      result.push(viewPoint.y);
+    }
+    return result;
+  },
+
+  _createSilouetteSymbolPathString: function() {
+    var silouettePoints = this._transformSilouetteSymbol();
+    var viewPath = this._createPathFromPoints(silouettePoints);
+    if( this._course !== undefined && this._speed !== undefined ) {
+      var courseAngle = this._getViewAngleFromModel(this._course);
+      var leaderPoints = this._createLeaderViewPoints(courseAngle);
+      viewPath += '' + this._createPathFromPoints(leaderPoints);
+    }
+    return viewPath;
+  },
+
+  /**
+   * Generates the symbol as SVG path string.
+   * depending on zoomlevel or track heading different symbol types are generated.
+   * @return {String} The symbol path string.
+   */
+  getPathString: function () {
+    if(this._heading === undefined) {
+      return this._createNoHeadingSymbolPathString();
+    }
+    else {
+      if(this._gpsRefPos === undefined || this._map.getZoom() <= this._minSilouetteZoom ) {
+        return this._createWithHeadingSymbolPathString();
+      }
+      else {
+        return this._createSilouetteSymbolPathString();
+      }
+    }
+  }
+});
+
+/**
+ * Factory function to create the symbol.
+ * @method trackSymbol
+ * @param latlng {LatLng} The position on the map.
+ * @param options {Object} Additional options. 
+ */
+L.trackSymbol = function (latlng, options) {
+    return new L.TrackSymbol(latlng, options);
+};
+
+
 /**
  * Created by Johannes Rudolph <johannes.rudolph@gmx.de> on 10.02.2016.
  */
@@ -15,7 +392,6 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         L.TrackSymbol.prototype.initialize.call(this,L.latLng(0.0,0.0) , options);
         options = options || {};
 
-        //this.setTrackId(options.trackId || this._mmsi);
         this.setFill(options.fill || true);
         this.setFillColor(options.fillColor || '#d3d3d3');
         this.setFillOpacity(options.fillOpacity || 1.0);
@@ -26,52 +402,13 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         this._leaderTime = 300;
         options.course = options.cog || 0;
 
-        this.setMmsi(options.mssi || 0);
-        this._aisVersionIndicator = options.aisVersionIndicator || 0;
-        this._imoNumber = options.imoNumber || 0;
-        this._callSign = options.callSign || "";
-        this._name = options.name || "";
-        this._typeOfShipAndCargo = options.typeOfShipAndCargo || 99;
-        this._etaMonth = options.etaMonth || 0;
-        this._etaDay = options.etaDay || 0;
-        this._etaHour = options.etaHour || 0;
-        this._etaMinute = options.etaMinute || 0;
-        this._maxPresentStaticDraught = options.maxPresentStaticDraught || 0;
-        this._destination = options.destination || "";
-        this._dte = options.dte || 0;
-        this._navigationStatus = options.navigationStatus || 0;
-        this._rot = options.rot || 0;
-        this._sog = options.sog || 0;
-        this._positionAccuracy = options.positionAccuracy || 0;
-        this._latitude = options.latitude || 0.0;
-        this._longitude = options.longitude || 0.0;
-        this._cog = options.cog || 0;
-        this._trueHeading = options.trueHeading || 0;
-        this._timeStamp = options.timeStamp || 0;
-        this._specialManoeuvreIndicator = options.specialManoeuvreIndicator || 0;
-        this._raimFlag = options.raimFlag || 0;
-        this._communicationState = options.communicationState || 0;
-        this._referencePositionA = options.referencePositionA || 0;
-        this._referencePositionB = options.referencePositionB || 0;
-        this._referencePositionC = options.referencePositionC || 0;
-        this._referencePositionD = options.referencePositionD || 0;
-        this._typeOfDevice = options.typeOfDevice || 0;
-        this._typeOfAtoN = options.typeOfAtoN || 0;
-        this._nameOfAtoN = options.nameOfAtoN || "";
-        this._utcYear = options.utcYear || 0;
-        this._utcMonth = options.utcMonth || 0;
-        this._utcDay = options.utcDay || 0;
-        this._utcHour = options.utcHour || 24;
-        this._utcMinute = options.utcMinute || 60;
-        this._utcSecond = options.utcSecond || 60;
-        this._virtualAtoNFlag = options.virtualAtoNFlag || 0;
-        this._assignedModeFlag = options.assignedModeFlag || 0;
-        this.setLastUpdate();
+        this.setName(options.name || "");
 
         this.bindLabel();
         this.bindPopup("",{className: "ais-track-popup"});
         this.bindTracksymbolLabel();
 
+        this.addData(options);
     },
 
     /**
@@ -124,18 +461,17 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         if(aisData.utcSecond) this.setUTCSecond(aisData.utcSecond);
         this._setNameByMMSITable();
         this.setLastUpdate();
-        this._labelAndPopupUpdate();
+        this.labelAndPopupUpdate();
     },
 
     /**
      *
      * @private
      */
-    _labelAndPopupUpdate: function (){
+    labelAndPopupUpdate: function (){
         this.updateLabelContent(this.getMmsi() + " " + this.getName());
-        if(this._popup){
-            this._popup.setContent(this._getPopupContent());
-            //this._popup.update();
+        if(this.getPopup()){
+            this.getPopup().setContent(this.getPopupContent());
         }
     },
 
@@ -144,51 +480,54 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {string}
      * @private
      */
-    _getPopupContent: function() {
-        var headerText = this.getName().length !== 0  ? this.getName() : "MSSI: " + this.getMmsi();
+    getPopupContent: function() {
 
-        var content = "<div class='ais-popup-header'>"+headerText+"</div>" +
-            "<div class='ais-popup-content'>" +
-            "<table>";          
-        content += this._getTableRow("MSSI",this.getMmsi());
-        
-        if (this.getMsgId() == 1 || this.getMsgId() == 2 || this.getMsgId() == 3 || this.getMsgId() == 5)
-        {
-            content += this._getTableRow("Name",this.getName());
-            content += this._getTableRow("IMO",this.getImoNumber());
-            content += this._getTableRow("Callsign",this.getCallSign());
-            content += this._getTableRow("Speed",this.getSog()," kn" + " | " + this.getSogKmH() + " km/h ");
-            content += this._getTableRow("Course",this.getCogDeg(),"&deg;");
-            content += this._getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
-            content += this._getTableRow("Destination",this.getDestination());
-            content += this._getTableRow("ETA",this.getEta());
-            content += this._getTableRow("Nav. Status",this.getNavigationStatusText());
-            content += this._getTableRow("Length",this.getShipLength()," m");
-            content += this._getTableRow("Width",this.getShipWidth()," m");
-            content += this._getTableRow("TypeOfShip",this.getTypeOfShipText());
-            content += this._getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
-        }
-        if(this.getMsgId() == 4)
-        {
-            content += this._getTableRow("Name",this.getName());
-            content += this._getTableRow("TypeOfDevice",this.getTypeOfDeviceText());
-            content += this._getTableRow("Time",this.getUTCTime());
-        }
-        if(this.getMsgId() == 21)
-        {            
-            content += this._getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
-            content += this._getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
-            content += this._getTableRow("AssignedMode",this.getAssignedModeFlagText());
-            content += this._getTableRow("RefA",this.getReferencePositionA());
-            content += this._getTableRow("RefB",this.getReferencePositionB());
-            content += this._getTableRow("RefC",this.getReferencePositionC());
-            content += this._getTableRow("RefD",this.getReferencePositionD());
-        }
-        content += this._getTableRow("Last AIS Msg",this.getLastUpdate());
-        //content += "<tr><td colspan='2'><img src='getShipImage.php?mmsi="+this.getMmsi()+"' width='250'/></td>";
-        content += "</table></div>";
-        content += "<div class='ais-popup-footer'>More Details on <a href='http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi()+"' target='_blank'>MarineTraffic.com</a></div>";
+        var content = L.DomUtil.create('div');
+
+        var headerText = this.getName().length !== 0  ? this.getName() : "MSSI: " + this.getMmsi();
+        var header = L.DomUtil.create('div','ais-popup-header',content);
+        header.innerHTML = headerText;
+
+        var popupContent = L.DomUtil.create('div','ais-popup-content',content);
+
+        var table = "<table>";
+        table += this._getTableRow("MSSI",this.getMmsi());
+
+        if(this.getName())                      table += this._getTableRow("Name",this.getName());
+        if(this.getImoNumber())                 table += this._getTableRow("IMO",this.getImoNumber());
+        if(this.getCallSign())                  table += this._getTableRow("Callsign",this.getCallSign());
+        if(this.getSog())                       table += this._getTableRow("Speed",this.getSog()," kn" + " | " + this.getSogKmH() + " km/h ");
+        if(this.getCogDeg())                    table += this._getTableRow("Course",this.getCogDeg(),"&deg;");
+        if(this.getTrueHeadingDeg())            table += this._getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
+        if(this.getDestination())               table += this._getTableRow("Destination",this.getDestination());
+        if(this.getEta())                       table += this._getTableRow("ETA",this.getEta());
+        if(this.getNavigationStatusText())      table += this._getTableRow("Nav. Status",this.getNavigationStatusText());
+        if(this.getShipLength())                table += this._getTableRow("Length",this.getShipLength()," m");
+        if(this.getShipWidth())                 table += this._getTableRow("Width",this.getShipWidth()," m");
+        if(this.getTypeOfShipText())            table += this._getTableRow("TypeOfShip",this.getTypeOfShipText());
+        if(this.getMaxPresentStaticDraught())   table += this._getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
+
+        if(this.getTypeOfDeviceText())          table += this._getTableRow("TypeOfDevice",this.getTypeOfDeviceText());
+        if(this.getUTCTime())                   table += this._getTableRow("Time",this.getUTCTime());
+
+        if(this.getTypeOfAtoNText())            table += this._getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
+        if(this.getVirtualAtoNFlagText())       table += this._getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
+        if(this.getAssignedModeFlagText())      table += this._getTableRow("AssignedMode",this.getAssignedModeFlagText());
+
+        table += this._getTableRow("Last AIS Messsage",this.getLastUpdate());
+
+        table += "</table>";
+
+        popupContent.innerHTML = table;
+
+        var footer = L.DomUtil.create('div','ais-popup-footer',content);
+        footer.innerHTML = "More Details on <a href='http://www.marinetraffic.com/en/ais/details/ships/mmsi:"+this.getMmsi()+"' target='_blank'>MarineTraffic.com</a>";
+
         return content;
+    },
+
+    getPopup: function () {
+        return this._popup;
     },
 
     /**
@@ -589,7 +928,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {*}
      */
     getTypeOfAtoNText: function(){
-        //this._setColorByTypeOfAtoN();
+        this._setColorByTypeOfAtoN();
         switch (this.getTypeOfAtoN()){
             case 0:
                 return "Default, Type of AtoN not specified";
@@ -872,7 +1211,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @returns {*}
      */
     getTypeOfDeviceText: function(){
-        //this._setColorByTypeOfDevice();
+        this._setColorByTypeOfDevice();
         switch (this.getTypeOfDevice()){
             case 0:
                 return "undefined (default)";
@@ -2143,380 +2482,3 @@ L.Path.include({
 		this.tracksymbollabel.close();
 	}
 });
-
-L.TrackLayer = function() {
-  var aislayer = L.featureGroup([]);
-
-  this.addTrack = function(marker) {
-    marker.addTo(aislayer);
-  };
-
-  this.removeTrack = function(marker) {
-    marker.removeLayer(aislayer);
-  };
-
-
-  this.addTo = function(map) {
-    aislayer.addTo(map);
-  };
-};
-
-L.trackLayer = function() {
-  return new L.TrackLayer();
-};
-
-
-/**
- * Tracksymbol for leaflet.
- * The visualization is chosen by zoomlevel or heading availability.
- * If zoomlevel is smaller than 'minSilouetteZoom' a triangular symbol is rendered.
- * If zoomlevel is greater than 'minSilouetteZoom' a ship silouette is rendered.
- * If heading is undefined a diamond symbol is rendered.
- * The following options are available:
- * <ul>
- *   <li>trackId: The unique id of the symbol (default: 0). </li>
- *   <li>size: Static size of the symbol in pixels (default:24). </li>
- *   <li>heading: Initial heading of the symbol (default: undefined). </li>
- *   <li>course: Initial course of the symbol (default: undefined). </li>
- *   <li>speed: Initial speed of the symbol-leader (default: undefined). </li>
- *   <li>leaderTime: The length of the leader (speed * leaderTime) (default:60s). </li>
- *   <li>minSilouetteZoom: The zoomlevel to switch from triangle to silouette (default:14). </li>
- *   <li>gpsRefPos: Initial GPS offset of the symbol (default: undefined). </li>
- *   <li>defaultSymbol: The triangular track symbol. Contains an array of n numbers. [x1,y1,x2,y2,...] </li>
- *   <li>noHeadingSymbol: The diamond track symbol. Contains an array of n numbers. [x1,y1,x2,y2,...] </li>
- *   <li>silouetteSymbol: The ship track symbol. Contains an array of n numbers. [x1,y1,x2,y2,...] </li>
- * </ul>
- * @class TrackSymbol
- * @constructor
- * @param latlng {LanLng} The initial position of the symbol.
- * @param options {Object} The initial options described above.
- */
-L.TrackSymbol = L.Path.extend({
-
-  initialize: function (latlng, options) {
-    L.Path.prototype.initialize.call(this, options);
-    if(latlng === undefined) {
-      throw Error('Please give a valid lat/lon-position');
-    }
-    options = options || {};
-    this._id = options.trackId || 0;
-    this._leaflet_id = this._id; 
-    this._latlng = L.latLng(latlng);
-    this._size = options.size || 24;
-    this._heading = options.heading;
-    this._course = options.course;
-    this._speed = options.speed;
-    this._leaderTime = options.leaderTime || 60.0;
-    this._minSilouetteZoom = options.minSilouetteZoom || 14;
-    this.setGPSRefPos(options.gpsRefPos);
-    this._triSymbol = options.defaultSymbol || [0.75,0, -0.25,0.3, -0.25,-0.3];
-    this._diaSymbol = options.noHeadingSymbol || [0.3,0, 0,0.3, -0.3,0, 0,-0.3];
-    this._silSymbol = options.silouetteSymbol || [1,0.5, 0.75,1, 0,1, 0,0, 0.75,0];
-  },
-
-  /**
-   * Set latitude/longitude on the symbol.
-   * @method setLatLng
-   * @param latlng {LatLng} Position of the symbol on the map. 
-   */
-  setLatLng: function (latlng) {
-    this._latlng = L.latLng(latlng);
-    return this.redraw();
-  },
-  
-  /**
-   * Set the speed shown in the symbol [m/s].
-   * The leader-length is calculated via leaderTime.
-   * @method setSpeed
-   * @param speed {Number} The speed in [m/s]. 
-   */
-  setSpeed: function( speed ) {
-    this._speed = speed;
-    return this.redraw();
-  },
-  
-  /**
-   * Sets the course over ground [rad].
-   * The speed-leader points in this direction.
-   * @method setCourse
-   * @param course {Number} The course in radians.
-   */
-  setCourse: function( course ) {
-    this._course = course;
-    return this.redraw();
-  },
-  
-  /**
-   * Sets the heading of the symbol [rad].
-   * The heading rotates the symbol.
-   * @method setHeading
-   * @param course {Number} The heading in radians.
-   */
-  setHeading: function( heading ) {
-    this._heading = heading;
-    return this.redraw();
-  },
-  
-  /**
-   * Sets the leaderTime of the symbol [seconds].
-   * @method setLeaderTime
-   * @param leaderTime {Number} The leaderTime in seconds.
-   */
-  setLeaderTime: function( leaderTime ) {
-    this._leaderTime = leaderTime;
-    return this.redraw();
-  },
-
-  /**
-   * Sets the position offset of the silouette to the center of the symbol.
-   * The array contains the refpoints from ITU R-REC-M.1371-4-201004 page 108
-   * in sequence A,B,C,D.
-   * @method setGPSRefPos
-   * @param gpsRefPos {Array} The GPS offset from center.
-   */
-  setGPSRefPos: function(gpsRefPos) {
-    if(gpsRefPos === undefined || 
-       gpsRefPos.length < 4) {
-      this._gpsRefPos = undefined;
-    }
-    else if(gpsRefPos[0] === 0 && 
-            gpsRefPos[1] === 0 && 
-            gpsRefPos[2] === 0 && 
-            gpsRefPos[3] === 0) {
-      this._gpsRefPos = undefined;
-    }
-    else {
-      this._gpsRefPos = gpsRefPos;
-    }
-    return this.redraw();
-  },
-
-  /**
-   * Returns the trackId.
-   * @method getTrackId
-   * @return {Number} The track id.
-   */
-  getTrackId: function() {
-    return this._trackId;
-  },
-    
-  _getLatSize: function () {
-    return this._getLatSizeOf(this._size);
-  },
-
-  _getLngSize: function () {
-    return this._getLngSizeOf(this._size);
-  },
-  
-  _getLatSizeOf: function (value) {
-    return (value / 40075017) * 360;
-  },
-
-  _getLngSizeOf: function (value) {
-    return ((value / 40075017) * 360) / Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
-  },
-
-  /**
-   * Returns the bounding box of the symbol.
-   * @method getBounds
-   * @return {LatLngBounds} The bounding box.
-   */
-  getBounds: function () {
-     var lngSize = this._getLngSize() / 2.0;
-     var latSize = this._getLatSize() / 2.0;
-     var latlng = this._latlng;
-     return new L.LatLngBounds(
-            [latlng.lat - latSize, latlng.lng - lngSize],
-            [latlng.lat + latSize, latlng.lng + lngSize]);
-  },
-
-  /**
-   * Returns the position of the symbol on the map.
-   * @mathod getLatLng
-   * @return {LatLng} The position object.
-   */
-  getLatLng: function () {
-    return this._latlng;
-  },
-
-  //
-  // Rotates the given point around the angle.
-  // @method _rotate
-  // @param point {Array} A point vector 2d.
-  // @param angle {Number} Angle for rotation [rad].
-  // @return The rotated vector 2d.
-  //
-  _rotate: function(point, angle) {
-    var x = point[0];
-    var y = point[1];
-    var si_z = Math.sin(angle);
-    var co_z = Math.cos(angle);
-    var newX = x * co_z - y * si_z;
-    var newY = x * si_z + y * co_z;
-    return [newX, newY];
-  },
-
-  //
-  // Rotates the given point-array around the angle.
-  // @method _rotateAllPoints
-  // @param points {Array} A point vector 2d.
-  // @param angle {Number} Angle for rotation [rad].
-  // @return The rotated vector-array 2d.
-  //
-  _rotateAllPoints: function(points, angle) {
-    var result = [];
-    for(var i=0;i<points.length;i+=2) {
-      var x = points[i + 0] * this._size;
-      var y = points[i + 1] * this._size;
-      var pt = this._rotate([x, y], angle);
-      result.push(pt[0]);
-      result.push(pt[1]);
-    }
-    return result;
-  },
-
-  _createLeaderViewPoints: function(angle) {
-    var result = [];
-    var leaderLength = this._speed * this._leaderTime;
-    var leaderEndLng = this._latlng.lng + this._getLngSizeOf(leaderLength * Math.cos(angle));
-    var leaderEndLat = this._latlng.lat + this._getLatSizeOf(leaderLength * Math.sin(angle));
-    var endPoint = this._map.latLngToLayerPoint(L.latLng([leaderEndLat, leaderEndLng]));
-    var startPoint = this._map.latLngToLayerPoint(this._latlng);
-    return [startPoint.x, startPoint.y, endPoint.x, endPoint.y];
-  },
-
-  _transformAllPointsToView: function(points) {
-    var result = [];
-    var symbolViewCenter = this._map.latLngToLayerPoint(this._latlng);
-    for(var i=0;i<points.length;i+=2) {
-      var x = symbolViewCenter.x + points[i+0];
-      var y = symbolViewCenter.y - points[i+1];
-      result.push(x);
-      result.push(y);
-    }
-    return result;
-  },
-
-  _createPathFromPoints: function(points) {
-    var result;
-    for(var i=0;i<points.length;i+=2) {
-      var x = points[i+0];
-      var y = points[i+1];
-      if(result === undefined)
-        result = 'M ' + x + ' ' + y + ' ';
-      else
-        result += 'L ' + x + ' ' + y + ' ';
-    }
-    return result + ' Z';
-  },
-
-  _getViewAngleFromModel:  function(modelAngle) {
-    return Math.PI/2.0 - modelAngle;
-  },
-
-  _createNoHeadingSymbolPathString: function() {
-    var viewPoints = this._transformAllPointsToView( this._rotateAllPoints(this._diaSymbol, 0.0) );
-    var viewPath = this._createPathFromPoints(viewPoints);
-    if( this._course !== undefined && this._speed !== undefined ) {
-      var courseAngle = this._getViewAngleFromModel(this._course);
-      var leaderPoints = this._createLeaderViewPoints(courseAngle);
-      viewPath += '' + this._createPathFromPoints(leaderPoints);
-    }
-    return viewPath;
-  },
-
-  _createWithHeadingSymbolPathString: function() {
-    var headingAngle = this._getViewAngleFromModel(this._heading);
-    var viewPoints = this._transformAllPointsToView( this._rotateAllPoints(this._triSymbol, headingAngle) );
-    var viewPath = this._createPathFromPoints(viewPoints);
-    if( this._course !== undefined && this._speed !== undefined ) {
-      var courseAngle = this._getViewAngleFromModel(this._course);
-      var leaderPoints = this._createLeaderViewPoints(courseAngle);
-      viewPath += '' + this._createPathFromPoints(leaderPoints);
-    }
-    return viewPath;
-  },
-
-  _resizeAndMovePoint: function(point, size, offset) {
-    return [
-      point[0] * size[0] + offset[0], 
-      point[1] * size[1] + offset[1]
-    ];
-  },
-
-  _getSizeFromGPSRefPos: function() {
-    return [
-      this._gpsRefPos[0] + this._gpsRefPos[1],
-      this._gpsRefPos[2] + this._gpsRefPos[3]
-    ];
-  },
-
-  _getOffsetFromGPSRefPos: function() {
-    return [
-      -this._gpsRefPos[1], 
-      -this._gpsRefPos[3]
-    ];
-  },
-
-  _transformSilouetteSymbol: function() {
-    var headingAngle = this._getViewAngleFromModel(this._heading);
-    var result = [];
-    var size = this._getSizeFromGPSRefPos();
-    var offset = this._getOffsetFromGPSRefPos();
-    for(var i=0;i<this._silSymbol.length;i+=2) {
-      var pt = [
-        this._silSymbol[i+0], 
-        this._silSymbol[i+1]
-      ];
-      pt = this._resizeAndMovePoint(pt, size, offset);
-      pt = this._rotate(pt, headingAngle);
-      var pointLng = this._latlng.lng + this._getLngSizeOf(pt[0]);
-      var pointLat = this._latlng.lat + this._getLatSizeOf(pt[1]);
-      var viewPoint = this._map.latLngToLayerPoint(L.latLng([pointLat, pointLng]));
-      result.push(viewPoint.x);
-      result.push(viewPoint.y);
-    }
-    return result;
-  },
-
-  _createSilouetteSymbolPathString: function() {
-    var silouettePoints = this._transformSilouetteSymbol();
-    var viewPath = this._createPathFromPoints(silouettePoints);
-    if( this._course !== undefined && this._speed !== undefined ) {
-      var courseAngle = this._getViewAngleFromModel(this._course);
-      var leaderPoints = this._createLeaderViewPoints(courseAngle);
-      viewPath += '' + this._createPathFromPoints(leaderPoints);
-    }
-    return viewPath;
-  },
-
-  /**
-   * Generates the symbol as SVG path string.
-   * depending on zoomlevel or track heading different symbol types are generated.
-   * @return {String} The symbol path string.
-   */
-  getPathString: function () {
-    if(this._heading === undefined) {
-      return this._createNoHeadingSymbolPathString();
-    }
-    else {
-      if(this._gpsRefPos === undefined || this._map.getZoom() <= this._minSilouetteZoom ) {
-        return this._createWithHeadingSymbolPathString();
-      }
-      else {
-        return this._createSilouetteSymbolPathString();
-      }
-    }
-  }
-});
-
-/**
- * Factory function to create the symbol.
- * @method trackSymbol
- * @param latlng {LatLng} The position on the map.
- * @param options {Object} Additional options. 
- */
-L.trackSymbol = function (latlng, options) {
-    return new L.TrackSymbol(latlng, options);
-};
-
