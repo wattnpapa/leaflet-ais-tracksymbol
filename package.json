@@ -13,7 +13,7 @@
     "marker"
   ],
   "author": "Johannes Rudolph <johannes.rudolph@gmx.com>",
-  "license": "GPL",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/PowerPan/leaflet-ais-tracksymbol/issues"
   },
