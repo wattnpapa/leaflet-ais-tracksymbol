@@ -459,7 +459,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         if(aisData.utcHour) this.setUTCHour(aisData.utcHour);
         if(aisData.utcMinute) this.setUTCMinute(aisData.utcMinute);
         if(aisData.utcSecond) this.setUTCSecond(aisData.utcSecond);
-        this._setNameByMMSITable();
+        this.setNameByMMSITable();
         this.setLastUpdate();
         this.labelAndPopupUpdate();
     },
@@ -579,7 +579,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      *
      * @private
      */
-    _setNameByMMSITable: function(){
+    setNameByMMSITable: function(){
         if (typeof MMSI !== 'undefined')
             if(MMSI[this.getMmsi()])
                 this.setName(MMSI[this.getMmsi()]);
