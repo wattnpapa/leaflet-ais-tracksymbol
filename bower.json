@@ -20,6 +20,6 @@
   ],
   "dependencies": {
     "leaflet-tracksymbol": "^1.0.1",
-    "leaflet.contextmenu": "Leaflet.contextmenu#*"
+    "leaflet.contextmenu": "git+https://github.com/PowerPan/Leaflet.contextmenu.git"
   }
 }
