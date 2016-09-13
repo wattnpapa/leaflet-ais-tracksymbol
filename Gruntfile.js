@@ -8,7 +8,7 @@ module.exports = function (grunt) {
 
         concat: {
           dist: {
-            src: ['node_modules/leaflet-tracksymbol/leaflet-tracklayer.js','node_modules/leaflet-tracksymbol/leaflet-tracksymbol.js','src/*.js','src/label/*.js'],
+            src: ['bower_components/leaflet-tracksymbol/leaflet-tracklayer.js','bower_components/leaflet-tracksymbol/leaflet-tracksymbol.js','src/*.js','src/label/*.js'],
             dest: 'dist/<%= pkg.name %>.js'
           }
         },

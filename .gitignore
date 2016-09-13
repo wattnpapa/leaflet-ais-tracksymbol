@@ -2,3 +2,4 @@ components/
 src/MMSI.js
 node_modules/
 MMSI.js
+bower_components/
