@@ -1,6 +1,6 @@
 {
   "name": "leaflet-ais-tracksymbol",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "leaflt-ais-tracksymbol",
   "publishConfig": {
     "registry": "http://registry.npmjs.org/"
