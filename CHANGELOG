@@ -1,2 +1,5 @@
+1.2.3
+    - Update master PowerPan/leaflet.conextmenu #8112173074
+
 1.2.2
     - Add Missing leaflet.contextmenu CSS File to Gruntfile
