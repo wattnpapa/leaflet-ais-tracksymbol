@@ -5,7 +5,7 @@
 /**
  *
  */
-L.AISTrackSymbolLayer = L.LayerGroup.extend({
+L.AISTrackSymbolLayer = L.FeatureGroup.extend({
 
     /**
      *
