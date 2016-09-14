@@ -24,14 +24,14 @@ module.exports = function (grunt) {
             },
             target: {
                 files: {
-                    'dist/<%= pkg.name %>.css': ['src/*.css','src/label/*.css']
+                    'dist/<%= pkg.name %>.css': ['src/*.css','src/label/*.css','bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.css']
                 }
             }
         },
 
         csslint: {
             strict: {
-                src: ['src/*.css','src/label/*.css','bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.css']
+                src: ['src/*.css','src/label/*.css']
             },
         },
 
