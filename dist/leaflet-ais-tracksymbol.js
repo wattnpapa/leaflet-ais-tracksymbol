@@ -2482,7 +2482,7 @@ L.aisTrackSymbol = function (options) {
 /**
  *
  */
-L.AISTrackSymbolLayer = L.LayerGroup.extend({
+L.AISTrackSymbolLayer = L.FeatureGroup.extend({
 
     /**
      *
