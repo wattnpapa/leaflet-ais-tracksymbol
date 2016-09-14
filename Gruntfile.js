@@ -8,7 +8,7 @@ module.exports = function (grunt) {
 
         concat: {
           dist: {
-            src: ['bower_components/leaflet-tracksymbol/leaflet-tracklayer.js','bower_components/leaflet-tracksymbol/leaflet-tracksymbol.js','src/*.js','src/label/*.js'],
+            src: ['bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.js','bower_components/leaflet-tracksymbol/leaflet-tracklayer.js','bower_components/leaflet-tracksymbol/leaflet-tracksymbol.js','src/*.js','src/label/*.js'],
             dest: 'dist/<%= pkg.name %>.js'
           }
         },
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 
         csslint: {
             strict: {
-                src: ['src/*.css','src/label/*.css']
+                src: ['src/*.css','src/label/*.css','bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.css']
             },
         },
 
