@@ -7,7 +7,17 @@ It displays AIS Contacts on the Map.
 [![Issue Count](https://codeclimate.com/github/PowerPan/leaflet-ais-tracksymbol/badges/issue_count.svg)](https://codeclimate.com/github/PowerPan/leaflet-ais-tracksymbol)
 [![Build Status](https://travis-ci.org/PowerPan/leaflet-ais-tracksymbol.svg?branch=master)](https://travis-ci.org/PowerPan/leaflet-ais-tracksymbol)
 
-# Install 
+## Package Repos
+
+### Bower
+```
+bower install --save leaflet-ais-tracksymbol
+```
+
+### NPM
+```
+npm install --save leaflet-ais-tracksymbol
+``` 
 
 
 # Usage
