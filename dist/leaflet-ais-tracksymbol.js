@@ -960,7 +960,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         this.setColor(options.color || '#000000');
         this.setOpacity(options.opacity || 1.0);
         this.setWeight(options.weight || 1.0);
-        this._leaderTime = 300;
+        this._leaderTime = 360;
         options.course = options.cog || 0;
 
         this.setName(options.name || "");
