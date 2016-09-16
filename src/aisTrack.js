@@ -137,7 +137,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         if(this.getVirtualAtoNFlagText())       table += this.getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
         if(this.getAssignedModeFlagText())      table += this.getTableRow("AssignedMode",this.getAssignedModeFlagText());
 
-        table += this.getTableRow("Last AIS Messsage",this.getLastUpdate());
+        table += this.getTableRow("Last AIS Message",this.getLastUpdate());
 
         table += "</table>";
 
