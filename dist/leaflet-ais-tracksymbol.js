@@ -1052,30 +1052,30 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         var popupContent = L.DomUtil.create('div','ais-popup-content',content);
 
         var table = "<table>";
-        table += this._getTableRow("MSSI",this.getMmsi());
+        table += this.getTableRow("MSSI",this.getMmsi());
 
-        if(this.getName())                      table += this._getTableRow("Name",this.getName());
-        if(this.getImoNumber())                 table += this._getTableRow("IMO",this.getImoNumber());
-        if(this.getCallSign())                  table += this._getTableRow("Callsign",this.getCallSign());
-        if(this.getSog())                       table += this._getTableRow("Speed",this.getSog()," kn" + " | " + this.getSogKmH() + " km/h ");
-        if(this.getCogDeg())                    table += this._getTableRow("Course",this.getCogDeg(),"&deg;");
-        if(this.getTrueHeadingDeg())            table += this._getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
-        if(this.getDestination())               table += this._getTableRow("Destination",this.getDestination());
-        if(this.getEta())                       table += this._getTableRow("ETA",this.getEta());
-        if(this.getNavigationStatusText())      table += this._getTableRow("Nav. Status",this.getNavigationStatusText());
-        if(this.getShipLength())                table += this._getTableRow("Length",this.getShipLength()," m");
-        if(this.getShipWidth())                 table += this._getTableRow("Width",this.getShipWidth()," m");
-        if(this.getTypeOfShipText())            table += this._getTableRow("TypeOfShip",this.getTypeOfShipText());
-        if(this.getMaxPresentStaticDraught())   table += this._getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
+        if(this.getName())                      table += this.getTableRow("Name",this.getName());
+        if(this.getImoNumber())                 table += this.getTableRow("IMO",this.getImoNumber());
+        if(this.getCallSign())                  table += this.getTableRow("Callsign",this.getCallSign());
+        if(this.getSog())                       table += this.getTableRow("Speed",this.getSog()," kn" + " | " + this.getSogKmH() + " km/h ");
+        if(this.getCogDeg())                    table += this.getTableRow("Course",this.getCogDeg(),"&deg;");
+        if(this.getTrueHeadingDeg())            table += this.getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
+        if(this.getDestination())               table += this.getTableRow("Destination",this.getDestination());
+        if(this.getEta())                       table += this.getTableRow("ETA",this.getEta());
+        if(this.getNavigationStatusText())      table += this.getTableRow("Nav. Status",this.getNavigationStatusText());
+        if(this.getShipLength())                table += this.getTableRow("Length",this.getShipLength()," m");
+        if(this.getShipWidth())                 table += this.getTableRow("Width",this.getShipWidth()," m");
+        if(this.getTypeOfShipText())            table += this.getTableRow("TypeOfShip",this.getTypeOfShipText());
+        if(this.getMaxPresentStaticDraught())   table += this.getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
 
-        if(this.getTypeOfDeviceText())          table += this._getTableRow("TypeOfDevice",this.getTypeOfDeviceText());
-        if(this.getUTCTime())                   table += this._getTableRow("Time",this.getUTCTime());
+        if(this.getTypeOfDeviceText())          table += this.getTableRow("TypeOfDevice",this.getTypeOfDeviceText());
+        if(this.getUTCTime())                   table += this.getTableRow("Time",this.getUTCTime());
 
-        if(this.getTypeOfAtoNText())            table += this._getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
-        if(this.getVirtualAtoNFlagText())       table += this._getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
-        if(this.getAssignedModeFlagText())      table += this._getTableRow("AssignedMode",this.getAssignedModeFlagText());
+        if(this.getTypeOfAtoNText())            table += this.getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
+        if(this.getVirtualAtoNFlagText())       table += this.getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
+        if(this.getAssignedModeFlagText())      table += this.getTableRow("AssignedMode",this.getAssignedModeFlagText());
 
-        table += this._getTableRow("Last AIS Messsage",this.getLastUpdate());
+        table += this.getTableRow("Last AIS Messsage",this.getLastUpdate());
 
         table += "</table>";
 
@@ -1105,9 +1105,8 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @param content
      * @param unit
      * @returns {*}
-     * @private
      */
-    _getTableRow: function(title,content,unit){
+    getTableRow: function(title,content,unit){
         if(!unit)
             unit = "";
         if(content)
