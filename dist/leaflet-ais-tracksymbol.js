@@ -1757,7 +1757,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
     getUTCTime: function(){
         if (typeof this.getUTCYear() === 'undefined')
             return null;
-        return this.getUTCYear() + "." + this.getUTCMonth() + "." + this.getUTCDay() + " " + this.getUTCHour() + ":" + this.getUTCMinute() + ":" + this.getUTCSecond() + " UTC";
+        return new Date(Date.UTC(this.getUTCYear(),this.getUTCMonth(),this.getUTCDay(),this.getUTCHour(),this.getUTCMinute(),this.getUTCSecond()));
     },
 
     /**
