@@ -123,7 +123,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         if(this.getCogDeg())                    table += this.getTableRow("Course",this.getCogDeg(),"&deg;");
         if(this.getTrueHeadingDeg())            table += this.getTableRow("Heading",this.getTrueHeadingDeg(),"&deg;");
         if(this.getDestination())               table += this.getTableRow("Destination",this.getDestination());
-        if(this.getEta())                       table += this.getTableRow("ETA",this.getEta());
+        if(this.getEta())                       table += this.getTableRow("ETA",moment(this.getEta()).format('llll'));
         if(this.getNavigationStatusText())      table += this.getTableRow("Nav. Status",this.getNavigationStatusText());
         if(this.getShipLength())                table += this.getTableRow("Length",this.getShipLength()," m");
         if(this.getShipWidth())                 table += this.getTableRow("Width",this.getShipWidth()," m");
@@ -131,13 +131,13 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         if(this.getMaxPresentStaticDraught())   table += this.getTableRow("Draught",this.getMaxPresentStaticDraught()," m");
 
         if(this.getTypeOfDeviceText())          table += this.getTableRow("TypeOfDevice",this.getTypeOfDeviceText());
-        if(this.getUTCTime())                   table += this.getTableRow("Time",this.getUTCTime());
+        if(this.getUTCTime())                   table += this.getTableRow("Time",moment(this.getUTCTime()).format('LTS'));
 
         if(this.getTypeOfAtoNText())            table += this.getTableRow("TypeOfAtoN",this.getTypeOfAtoNText());
         if(this.getVirtualAtoNFlagText())       table += this.getTableRow("VirtualAtoN",this.getVirtualAtoNFlagText());
         if(this.getAssignedModeFlagText())      table += this.getTableRow("AssignedMode",this.getAssignedModeFlagText());
 
-        table += this.getTableRow("Last AIS Message",this.getLastUpdate());
+        table += this.getTableRow("Last AIS Message",moment(this.getLastUpdate()).format('LTS'));
 
         table += "</table>";
 
