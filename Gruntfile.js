@@ -8,7 +8,13 @@ module.exports = function (grunt) {
 
         concat: {
           dist: {
-            src: ['bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.js','bower_components/leaflet-tracksymbol/leaflet-tracklayer.js','bower_components/leaflet-tracksymbol/leaflet-tracksymbol.js','src/*.js','src/label/*.js'],
+            src: ['bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.js',
+                'bower_components/leaflet-tracksymbol/leaflet-tracklayer.js',
+                'bower_components/leaflet-tracksymbol/leaflet-tracksymbol.js',
+                'bower_components/moment/min/moment.min.js',
+                'bower_components/moment/locale/de.js',
+                'bower_components/moment-timezone/builds/moment-timezone-with-data.min.js',
+                'src/*.js','src/label/*.js'],
             dest: 'dist/<%= pkg.name %>.js'
           }
         },
