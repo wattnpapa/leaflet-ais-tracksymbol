@@ -27,7 +27,12 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
 
         this.setName(options.name || "");
 
-        this.bindLabel();
+        if(this.getLeafletVersion()[0] == "1"){
+            this.bindTooltip();
+        }
+        else {
+            this.bindLabel();
+        }
         this.bindPopup("",{className: "ais-track-popup"});
         this.bindTracksymbolLabel();
 
@@ -92,7 +97,12 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @private
      */
     labelAndPopupUpdate: function (){
-        this.updateLabelContent(this.getMmsi() + " " + this.getName());
+        if(this.getLeafletVersion()[0] == "1"){
+            this.setTooltipContent(this.getMmsi() + " " + this.getName());
+        }
+        else {
+            this.updateLabelContent(this.getMmsi() + " " + this.getName());
+        }
         if(this.getPopup()){
             this.getPopup().setContent(this.getPopupContent());
         }
@@ -1522,6 +1532,15 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      */
     setFillColor: function(color) {
         this.setStyle({fillColor: color});
+    },
+
+    /**
+     *
+     * @returns {Array}
+     * @private
+     */
+    getLeafletVersion: function () {
+        return L.version.split(".");
     }
 
 });
