@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TrackSymbol example</title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="../dist/leaflet-ais-tracksymbol.css" />
+</head>
+<body>
+<div id="map" style="width: 600px; height: 400px"></div>
+<script src="../bower_components/leaflet/dist/leaflet.js"></script>
+<script src="../dist/leaflet-ais-tracksymbol.js"></script>
+<script>
+    var course = 0.0;
+    var position = L.latLng(54.15, 8.0);
+    var map = L.map('map').setView(position, 10);
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    L.tileLayer(osmUrl, {
+        maxZoom: 18
+    }).addTo(map);
+    var ts = L.aisTrackSymbol( {
+        contextmenu: true,
+        contextmenuItems: [{
+            text: 'Details',
+            callback: this.showDetails,
+            index: 0
+        }, {
+            text: 'MarineTraffic.com',
+            callback: this.openMarineTraffic,
+            index: 1
+        },{
+            separator: true,
+            index: 2
+        }]});
+    console.log(ts);
+    ts.addData({"msgId":4,"mmsi":24422002,"name":"demo","utcYear":2016,"utcMon":11,"utcDay":14,"utcHour":13,"utcMin":40,"utcSec"
+    :30,"posAcc":1,"longitude":8.155278333333333,"latitude":54.185555,"devType":7,"raim":0,"comstate":{"syncState":0
+            ,"slotTimeout":2,"slotNr":1150},"timestamp":1479130830744});
+    console.log(ts);
+    ts.addTo(map);
+    /*setInterval(function() {
+        course += Math.PI * 10.0 / 180.0;
+        ts.setCourse(course);
+        ts.setHeading(course);
+    }, 1000);*/
+</script>
+</body>
+</html>
