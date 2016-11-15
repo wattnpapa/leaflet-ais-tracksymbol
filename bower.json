@@ -19,7 +19,7 @@
     "tests"
   ],
   "devDependencies": {
-    "leaflet-tracksymbol": "^1.0.1",
+    "leaflet-tracksymbol": "^1.0.7",
     "leaflet.contextmenu": "git+https://github.com/PowerPan/Leaflet.contextmenu.git",
     "moment-timezone": "^0.5.5",
     "moment": "^2.15.1"
