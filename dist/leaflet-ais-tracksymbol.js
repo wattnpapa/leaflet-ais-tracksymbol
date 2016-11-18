@@ -592,10 +592,10 @@ L.trackLayer = function() {
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
-
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -655,15 +655,16 @@ L.TrackSymbol = L.Path.extend({
   },
 
   /**
-   *
+   * This function is empty but necessary 
+   * because it is called during the rendering process of Leaflet v1.0.
    * @method _project
    */
   _project: function(){
-
   },
 
   /**
    * Update the path
+   * This function is called during the rendering process of leaflet v1.0
    * @method _update
    */
   _update: function(){
@@ -671,7 +672,7 @@ L.TrackSymbol = L.Path.extend({
   },
 
   /**
-   * Set the Path
+   * Sets the contents of the d-attribute in a path-element of an svg-file.  
    * @method _setPath
    */
   _setPath: function(){
@@ -714,7 +715,9 @@ L.TrackSymbol = L.Path.extend({
    * @param latlng {LatLng} Position of the symbol on the map. 
    */
   setLatLng: function (latlng) {
+    var oldLatLng = this._latlng;
     this._latlng = L.latLng(latlng);
+    this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
     return this.redraw();
   },
   
