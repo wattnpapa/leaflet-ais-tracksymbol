@@ -64,5 +64,6 @@ module.exports = function (grunt) {
     grunt.registerTask('check', ['jshint', 'csslint']);
     grunt.registerTask('test', ['qunit']);
     grunt.registerTask('jenkins', ['jshint', 'qunit']);
+    grunt.registerTask('develop', ['concat', 'csslint', 'jshint']);
     grunt.registerTask('default', ['concat', 'csslint', 'jshint', 'uglify', 'cssmin']);
 };
