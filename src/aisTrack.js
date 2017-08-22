@@ -27,12 +27,6 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
 
         this.setName(options.name || "");
 
-        if(this.getLeafletVersion()[0] == "1"){
-            this.bindTooltip();
-        }
-        else {
-            this.bindLabel();
-        }
         this.bindPopup("",{className: "ais-track-popup"});
         this.bindTooltip();
 
@@ -1088,8 +1082,6 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      */
     setLongitude: function(lng){
         this._longitude = parseFloat(lng);
-        if(this._popup)
-            this._popup.setLatLng(L.latLng(this.getLatitude(),this.getLongitude()));
     },
 
     /**
