@@ -34,7 +34,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
             this.bindLabel();
         }
         this.bindPopup("",{className: "ais-track-popup"});
-        this.bindTracksymbolLabel();
+        this.bindTooltip();
 
         this.addData(options);
     },
@@ -97,12 +97,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      * @private
      */
     labelAndPopupUpdate: function (){
-        if(this.getLeafletVersion()[0] == "1"){
-            this.setTooltipContent(this.getMmsi() + " " + this.getName());
-        }
-        else {
-            this.updateLabelContent(this.getMmsi() + " " + this.getName());
-        }
+        this.setTooltipContent(this.getMmsi() + " " + this.getName());
         if(this.getPopup()){
             this.getPopup().setContent(this.getPopupContent());
         }
@@ -1095,7 +1090,6 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         this._longitude = parseFloat(lng);
         if(this._popup)
             this._popup.setLatLng(L.latLng(this.getLatitude(),this.getLongitude()));
-        this.updateTracksymolLabelLatLng(L.latLng(this.getLatitude(),this.getLongitude()));
     },
 
     /**

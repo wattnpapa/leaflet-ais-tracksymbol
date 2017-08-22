@@ -14,13 +14,13 @@ module.exports = function (grunt) {
                 'bower_components/moment/min/moment.min.js',
                 'bower_components/moment/locale/de.js',
                 'bower_components/moment-timezone/builds/moment-timezone-with-data.min.js',
-                'src/*.js','src/label/*.js'],
+                'src/*.js'],
             dest: 'dist/<%= pkg.name %>.js'
           }
         },
 
         jshint: {
-            all: ['src/*.js','src/label/*.js']
+            all: ['src/*.js']
         },
 
         cssmin:{
@@ -30,14 +30,14 @@ module.exports = function (grunt) {
             },
             target: {
                 files: {
-                    'dist/<%= pkg.name %>.css': ['src/*.css','src/label/*.css','bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.css']
+                    'dist/<%= pkg.name %>.css': ['src/*.css','bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.css']
                 }
             }
         },
 
         csslint: {
             strict: {
-                src: ['src/*.css','src/label/*.css']
+                src: ['src/*.css']
             },
         },
 
