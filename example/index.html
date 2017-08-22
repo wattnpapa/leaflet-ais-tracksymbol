@@ -35,17 +35,16 @@
             separator: true,
             index: 2
         }]});
-    console.log(ts);
+
     ts.addData({"msgId":4,"mmsi":24422002,"name":"demo","utcYear":2016,"utcMon":11,"utcDay":14,"utcHour":13,"utcMin":40,"utcSec"
     :30,"posAcc":1,"longitude":8.155278333333333,"latitude":54.185555,"devType":7,"raim":0,"comstate":{"syncState":0
             ,"slotTimeout":2,"slotNr":1150},"timestamp":1479130830744});
-    console.log(ts);
     ts.addTo(map);
-    /*setInterval(function() {
-        course += Math.PI * 10.0 / 180.0;
-        ts.setCourse(course);
-        ts.setHeading(course);
-    }, 1000);*/
+
+    setTimeout(function () {
+        ts.addData({"msgId":1,"mmsi":24422002,"longitude":8.255278333333333,"latitude":54.2855559});
+    },2000)
+    
 </script>
 </body>
 </html>
