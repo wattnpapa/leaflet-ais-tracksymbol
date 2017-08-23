@@ -86,7 +86,7 @@ L.AISTrackSymbolLayer = L.FeatureGroup.extend({
     searchTrack: function (searchText) {
         for(var i = 0 ; i < this.getLayers().length; i++){
             var obj = this.getLayers()[i];
-            if(obj.getMmsi() === parseInt(searchText)){
+            if(obj.getMmsi() === parseInt(searchText,10)){
                 return obj;
             }
             if(obj.getName().toLowerCase() === searchText.toLowerCase()){
