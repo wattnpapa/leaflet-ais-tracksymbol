@@ -3,7 +3,7 @@
 AIS Extension for [leaflet-tracksymbol](https://github.com/lethexa/leaflet-tracksymbol)
 It displays AIS Contacts on the Map.
 
-Works with Leaflet 0.7.x and 1.x.x
+Works with Leaflet >= 1.2.0
 
 [![Code Climate](https://codeclimate.com/github/PowerPan/leaflet-ais-tracksymbol/badges/gpa.svg)](https://codeclimate.com/github/PowerPan/leaflet-ais-tracksymbol)
 [![Issue Count](https://codeclimate.com/github/PowerPan/leaflet-ais-tracksymbol/badges/issue_count.svg)](https://codeclimate.com/github/PowerPan/leaflet-ais-tracksymbol)
