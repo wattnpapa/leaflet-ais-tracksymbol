@@ -2,6 +2,9 @@
 
 AIS Extension for [leaflet-tracksymbol](https://github.com/lethexa/leaflet-tracksymbol)
 It displays AIS Contacts on the Map.
+If you want it is also possible to show Images instead of Tracksymbols. 
+The Image is choosen by the Type of ship. In the Example you can find how to set
+different Images for different Types of ships
 
 Works with Leaflet >= 1.2.0
 
