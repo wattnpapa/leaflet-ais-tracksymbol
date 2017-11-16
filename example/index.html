@@ -14,36 +14,49 @@
 <script src="../bower_components/leaflet/dist/leaflet.js"></script>
 <script src="../dist/leaflet-ais-tracksymbol.js"></script>
 <script>
-    var course = 0.0;
     var position = L.latLng(54.15, 8.0);
     var map = L.map('map').setView(position, 10);
     var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     L.tileLayer(osmUrl, {
         maxZoom: 18
     }).addTo(map);
-    var ts = L.aisTrackSymbol( {
-        contextmenu: true,
-        contextmenuItems: [{
-            text: 'Details',
-            callback: this.showDetails,
-            index: 0
-        }, {
-            text: 'MarineTraffic.com',
-            callback: this.openMarineTraffic,
-            index: 1
-        },{
-            separator: true,
-            index: 2
-        }]});
 
-    ts.addData({"msgId":4,"mmsi":24422002,"name":"demo","utcYear":2016,"utcMon":11,"utcDay":14,"utcHour":13,"utcMin":40,"utcSec"
-    :30,"posAcc":1,"longitude":8.155278333333333,"latitude":54.185555,"devType":7,"raim":0,"comstate":{"syncState":0
-            ,"slotTimeout":2,"slotNr":1150},"timestamp":1479130830744});
+    var iconListByTypeOfShip = [];
+    iconListByTypeOfShip[0] = L.icon({
+        iconUrl: 'demoIcons/sail.png',
+        iconSize: [38, 55],
+        iconAnchor: [19, 55],
+        popupAnchor: [-3, -76]
+    });
+    iconListByTypeOfShip[25] = L.icon({
+        iconUrl: 'demoIcons/pirate.png',
+        iconSize: [38, 55],
+        iconAnchor: [19, 55],
+        popupAnchor: [-3, -76]
+    });
+
+    var ts = new L.aisTrackSymbol( { });
+
+    ts.addData({"msgId":4,"mmsi":24422002,"name":"demo","utcYear":2016,"utcMon":11,"utcDay":14,"utcHour":13,"utcMin":40
+        ,"utcSec":30,"posAcc":1,"longitude":8.155278333333333,"latitude":54.185555,"devType":7,"raim":0,
+        "comstate":{"syncState":0,"slotTimeout":2,"slotNr":1150},"timestamp":1479130830744});
     ts.addTo(map);
 
-    setTimeout(function () {
-        ts.addData({"msgId":1,"mmsi":24422002,"longitude":8.255278333333333,"latitude":54.2855559});
-    },2000)
+
+    var ts2 = new L.aisTrackSymbol( { iconListByTypeOfShip: iconListByTypeOfShip, "latitude": 54.11,"longitude":8.2 }).addTo(map);
+
+    ts2.addData({"msgId":4,"mmsi":24422002,"name":"demo","utcYear":2016,"utcMon":11,"utcDay":14,"utcHour":13,"utcMin":40,"utcSec"
+        :30,"posAcc":1,"longitude":8.25,"latitude":54.09,"devType":7,"raim":0,"comstate":{"syncState":0
+        ,"slotTimeout":2,"slotNr":1150},"timestamp":1479130830744, "typeOfShipAndCargo" : 25});
+
+
+    var ts3 = new L.aisTrackSymbol( { iconListByTypeOfShip: iconListByTypeOfShip, "latitude": 54.3,"longitude":8.1 }).addTo(map);
+
+    ts3.addData({"msgId":4,"mmsi":24422002,"name":"demo","utcYear":2016,"utcMon":11,"utcDay":14,"utcHour":13,"utcMin":40,"utcSec"
+        :30,"posAcc":1,"longitude":8.20,"latitude":54.04,"devType":7,"raim":0,"comstate":{"syncState":0
+        ,"slotTimeout":2,"slotNr":1150},"timestamp":1479130830744, "typeOfShipAndCargo" : 24});
+
+
     
 </script>
 </body>
