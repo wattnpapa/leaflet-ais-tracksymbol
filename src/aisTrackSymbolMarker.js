@@ -1,29 +1,22 @@
 /**
- * Created by Johannes Rudolph <johannes.rudolph@gmx.de> on 10.02.2016.
+ * Created by Johannes Rudolph <johannes.rudolph@gmx.de> on 14.11.2017.
  */
 
 /**
  *
  */
-L.AISTrackSymbol = L.TrackSymbol.extend({
+L.AISTrackSymbolMarker = L.Marker.extend({
 
     /**
      *
      * @param options
      */
     initialize: function (options) {
-        L.TrackSymbol.prototype.initialize.call(this,L.latLng(0.0,0.0) , options);
-        options = options || {};
+        L.Marker.prototype.initialize.call(this,L.latLng(options.latitude,options.longitude) , options);
 
-        this.setFill(options.fill || true);
-        this.setFillColor(options.fillColor || '#d3d3d3');
-        this.setFillOpacity(options.fillOpacity || 1.0);
-        this.setStroke(options.stroke || true);
-        this.setColor(options.color || '#000000');
-        this.setOpacity(options.opacity || 1.0);
-        this.setWeight(options.weight || 1.0);
         this._leaderTime = 360;
         options.course = options.cog || 0;
+        this._iconListByTypeOfShip = options.iconListByTypeOfShip;
 
         this.setName(options.name || "");
 
@@ -182,244 +175,10 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      *
      * @private
      */
-    _setColorByTypeOfDevice: function(){
-        this.setColor("#61380b");
-        this.setFillColor("#ffffff");
-    },
-
-    /**
-     *
-     * @private
-     */
-    _setColorByTypeOfAtoN: function(){
-        this.setColor("#61380b");
-        this.setFillColor("#CEF6CE");
-    },
-
-    /**
-     *
-     * @private
-     */
     setNameByMMSITable: function(){
         if (typeof MMSI !== 'undefined')
             if(MMSI[this.getMmsi()])
                 this.setName(MMSI[this.getMmsi()]);
-    },
-
-    /**
-     *
-     * @private
-     */
-    _setColorsByTypeOfShip: function(){
-        switch (this.getTypeOfShipAndCargo()){
-            case 0: //NOT AVAILABLE OR NO SHIP
-                this.setColor("#000000");
-                this.setFillColor("#d3d3d3");
-                break;
-            case 1: //RESERVED               
-            case 2: //RESERVED
-            case 3: //RESERVED
-            case 4: //RESERVED
-            case 5: //RESERVED
-            case 6: //RESERVED
-            case 8: //RESERVED
-            case 9: //RESERVED
-            case 10: //RESERVED
-            case 11: //RESERVED
-            case 12: //RESERVED
-            case 13: //RESERVED
-            case 14: //RESERVED
-            case 15: //RESERVED
-            case 16: //RESERVED
-            case 17: //RESERVED
-            case 18: //RESERVED
-            case 19: //RESERVED
-                this.setColor("#000000");
-                this.setFillColor("#d3d3d3");
-                break;
-            case 20: //Wing In Grnd
-            case 21: //Wing In Grnd
-            case 22: //Wing In Grnd
-            case 23: //Wing In Grnd
-            case 24: //Wing In Grnd
-            case 25: //Wing In Grnd
-            case 26: //Wing In Grnd
-            case 27: //Wing In Grnd
-            case 28: //Wing In Grnd
-                this.setColor("#000000");
-                this.setFillColor("#d3d3d3");
-                break;
-            case 29: //SAR AIRCRAFT
-                this.setColor("#000000");
-                this.setFillColor("#d3d3d3");
-                break;
-            case 30: //Fishing
-                this.setColor("#800000");
-                this.setFillColor("#ffa07a");
-                break;
-            case 31: //Tug
-            case 32: //Tug
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 33: //Dredger
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 34: //Dive Vessel
-            case 35: //Military Ops
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 36: //Sailing Vessel
-                this.setColor("#8b008b");
-                this.setFillColor("#ff00ff");
-                break;
-            case 37: //Pleasure Craft
-                this.setColor("#8b008b");
-                this.setFillColor("#ff00ff");
-                break;
-            case 38: //RESERVED
-            case 39: //RESERVED
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 40: //High-Speed Craft
-            case 41: //High-Speed Craft
-            case 42: //High-Speed Craft
-            case 43: //High-Speed Craft
-            case 44: //High-Speed Craft
-            case 45: //High-Speed Craft
-            case 46: //High-Speed Craft
-            case 47: //High-Speed Craft
-            case 48: //High-Speed Craft
-            case 49: //High-Speed Craft
-                this.setColor("#00008b");
-                this.setFillColor("#ffff00");
-                break;
-            case 50: //Pilot Vessel
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 51: //SAR
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 52: //Tug
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 53: //Port Tender
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 54: //Anti-Pollution
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 55: //Law Enforce
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 56: //Local Vessel
-            case 57: //Local Vessel
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 58: //Medical Trans (as defined in the 1949 Geneva Conventions and Additional Protocols)
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 59: //Special Craft
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            case 60: //Passenger
-            case 61: //Passenger
-            case 62: //Passenger
-            case 63: //Passenger
-            case 64: //Passenger
-            case 65: //Passenger
-            case 66: //Passenger
-            case 67: //Passenger
-            case 68: //Passenger
-            case 69: //Passenger
-                this.setColor("#00008b");
-                this.setFillColor("#0000ff");
-                break;
-            case 70: //Cargo
-                this.setColor("#006400");
-                this.setFillColor("#90ee90");
-                break;
-            case 71: //Cargo - Hazard A
-                this.setColor("#006400");
-                this.setFillColor("#90ee90");
-                break;
-            case 72: //Cargo - Hazard B
-                this.setColor("#006400");
-                this.setFillColor("#90ee90");
-                break;
-            case 73: //Cargo - Hazard C
-                this.setColor("#006400");
-                this.setFillColor("#90ee90");
-                break;
-            case 74: //Cargo - Hazard D
-                this.setColor("#006400");
-                this.setFillColor("#90ee90");
-                break;
-            case 75: //Cargo
-            case 76: //Cargo
-            case 77: //Cargo
-            case 78: //Cargo
-            case 79: //Cargo
-                this.setColor("#006400");
-                this.setFillColor("#90ee90");
-                break;
-            case 80: //Tanker
-                this.setColor("#8b0000");
-                this.setFillColor("#ff0000");
-                break;
-            case 81: //Tanker - Hazard A
-                this.setColor("#8b0000");
-                this.setFillColor("#ff0000");
-                break;
-            case 82: //Tanker - Hazard B
-                this.setColor("#8b0000");
-                this.setFillColor("#ff0000");
-                break;
-            case 83: //Tanker - Hazard C
-                this.setColor("#8b0000");
-                this.setFillColor("#ff0000");
-                break;
-            case 84: //Tanker - Hazard D
-                this.setColor("#8b0000");
-                this.setFillColor("#ff0000");
-                break;
-            case 85: //Tanker
-            case 86: //Tanker
-            case 87: //Tanker
-            case 88: //Tanker
-            case 89: //Tanker
-                this.setColor("#8b0000");
-                this.setFillColor("#ff0000");
-                break;
-            case 90: //Other
-            case 91: //Other
-            case 92: //Other
-            case 93: //Other
-            case 94: //Other
-            case 95: //Other
-            case 96: //Other
-            case 97: //Other
-            case 98: //Other
-            case 99: //Other
-                this.setColor("#008b8b");
-                this.setFillColor("#00ffff");
-                break;
-            default: //Default
-                this.setColor("#000000");
-                this.setFillColor("#d3d3d3");
-        }
     },
 
     /**
@@ -533,7 +292,7 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
      */
     setTypeOfShipAndCargo: function(typeOfShipAndCargo){
         this._typeOfShipAndCargo = typeOfShipAndCargo;
-        this._setColorsByTypeOfShip();
+        this._setIconByTypeOfShip();
     },
 
     /**
@@ -1436,6 +1195,15 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
         }
     },
 
+
+    _setIconByTypeOfShip: function(){
+        var icon = this._iconListByTypeOfShip[0];
+        if(this._iconListByTypeOfShip[this.getTypeOfShipAndCargo()]){
+            icon = this._iconListByTypeOfShip[this.getTypeOfShipAndCargo()];
+        }
+        this.setIcon(icon);
+    },
+
     /**
      *
      * @returns {Date}
@@ -1452,75 +1220,6 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
     },
 
     /**
-     * Sets the line color of the symbol.
-     * @method setColor
-     * @param color {String} The color string.
-     */
-    setColor: function(color) {
-        this.setStyle({color: color});
-        return this.redraw();
-    },
-
-    /**
-     * Sets the fill Opacity of the symbol.
-     * @method setFillOpacity
-     * @param fillOpacity {Number} The fill opacity.
-     */
-    setFillOpacity: function(fillOpacity) {
-        this.setStyle({fillOpacity: fillOpacity});
-        return this.redraw();
-    },
-
-    /**
-     * Sets the Opacity of the symbol.
-     * @method setOpacity
-     * @param opacity {Number} The opacity.
-     */
-    setOpacity: function(opacity) {
-        this.setStyle({opacity: opacity});
-        return this.redraw();
-    },
-
-    /**
-     * Sets the Weight of the symbol.
-     * @method setWeight
-     * @param weight {Number} The weight .
-     */
-    setWeight: function(weight) {
-        this.setStyle({weight: weight});
-        return this.redraw();
-    },
-
-    /**
-     * Sets the fill of the symbol.
-     * @method setFill
-     * @param fill {Boolean} The fill.
-     */
-    setFill: function(fill) {
-        this.setStyle({fill: fill});
-        return this.redraw();
-    },
-
-    /**
-     * Sets the stroke of the symbol.
-     * @method setStroke
-     * @param stroke {Boolean} The stroke.
-     */
-    setStroke: function(stroke) {
-        this.setStyle({stroke: stroke});
-        return this.redraw();
-    },
-
-    /**
-     * Sets the fill color of the symbol.
-     * @method setFillColor
-     * @param color {String} The color string.
-     */
-    setFillColor: function(color) {
-        this.setStyle({fillColor: color});
-    },
-
-    /**
      *
      * @returns {Array}
      * @private
@@ -1530,13 +1229,4 @@ L.AISTrackSymbol = L.TrackSymbol.extend({
     }
 
 });
-
-/**
- *
- * @param options
- * @returns {*}
- */
-L.aisTrackSymbol = function (options) {
-    return new L.AISTrackSymbol(options);
-};
 
