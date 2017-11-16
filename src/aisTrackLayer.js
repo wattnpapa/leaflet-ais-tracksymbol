@@ -11,10 +11,13 @@ L.AISTrackSymbolLayer = L.FeatureGroup.extend({
      *
      * @param layers
      */
-    initialize: function(layers){
+    initialize: function(layers,iconListByTypeOfShip){
         L.LayerGroup.prototype.initialize.call(this, layers);
         this._intervalDeadObjs = setInterval(this._checkDeadObjects,1000,this);
-        this.setRemoveTime(10);      
+        this.setRemoveTime(10);
+        if(iconListByTypeOfShip !== undefined){
+            this._iconListByTypeOfShip = iconListByTypeOfShip;
+        }
     },
 
     /**
@@ -30,7 +33,7 @@ L.AISTrackSymbolLayer = L.FeatureGroup.extend({
             trackMarker.addData(data);
         }
         else{
-            trackMarker = L.aisTrackSymbol( {
+            var options = {
                 contextmenu: true,
                 contextmenuItems: [{
                     text: 'Details',
@@ -43,7 +46,11 @@ L.AISTrackSymbolLayer = L.FeatureGroup.extend({
                 },{
                     separator: true,
                     index: 2
-                }]});
+                }]};
+            if(this._iconListByTypeOfShip !== undefined){
+                options.iconListByTypeOfShip = this._iconListByTypeOfShip;
+            }
+            trackMarker = L.aisTrackSymbol( options );
             trackMarker.addData(data);
             this.addLayer(trackMarker);
         }
