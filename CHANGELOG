@@ -1,3 +1,6 @@
+2.0.1
+    - Fix Setting default Marker Icon
+
 1.7.0
     - Compability with Leaflet >= 1.2.0 only
     - Remove old Stuff

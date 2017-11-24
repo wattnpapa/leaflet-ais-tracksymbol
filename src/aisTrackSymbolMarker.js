@@ -17,6 +17,7 @@ L.AISTrackSymbolMarker = L.Marker.extend({
         this._leaderTime = 360;
         options.course = options.cog || 0;
         this._iconListByTypeOfShip = options.iconListByTypeOfShip;
+        this.setIcon(this._iconListByTypeOfShip[0]);
 
         this.setName(options.name || "");
 
